@@ -1,0 +1,1 @@
+{"root":["./src/app.tsx","./src/main.tsx","./src/vite-env.d.ts","./src/app/store.ts","./src/app/api/apislice.ts","./src/features/auth/authslice.ts","./src/features/auth/loginapislice.ts","./src/features/auth/logoutslice.ts","./src/features/auth/registerapislice.ts"],"version":"5.7.3"}
