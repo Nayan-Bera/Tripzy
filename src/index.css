@@ -1,8 +1,9 @@
 /*  @reference tailwind; */
-@tailwind base;
+/* @tailwind base;
 @tailwind components;
-@tailwind utilities;
+@tailwind utilities; */
 
+@import "tailwindcss";
 
 /* .container-custom {
   @apply container mx-auto px-4 sm:px-6 lg:px-8;
@@ -151,13 +152,9 @@ h6 {
 	}
 
 	/* Optional: Remove any box shadows and padding for cleaner printing */
-	.shadow-xl,
-	.print:shadow-none {
-		box-shadow: none !important;
-	}
-
-	.print:p-0 {
-		padding: 0 !important;
+	.shadow-xl
+	{
+		box-shadow: none;
 	}
 
 	/* Adjust page margins for printing */
