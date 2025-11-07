@@ -1,35 +1,20 @@
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+// src/routes/router.tsx
+import { createBrowserRouter } from "react-router-dom";
+import AppLayout from "../components/layout/AppLayout";
+import Home from "../pages/Home";
+import About from "../pages/About";
+import NotFound from "../pages/NotFound";
 
-// Layout
-import ProviderLayout from "../layouts/ProviderLayout";
+const router = createBrowserRouter([
+  {
+    path: "/",
+    element: <AppLayout />,
+    children: [
+      { path: "/", element: <Home /> },
+      { path: "/about", element: <About /> },
+      { path: "*", element: <NotFound /> },
+    ],
+  },
+]);
 
-// Pages (example placeholders)
-import ProviderPage from "../pages/provider/page";
-
-
-export default function AppRoutes() {
-  return (
-    <BrowserRouter>
-      <Routes>
-        {/* Provider Routes */}
-        <Route
-          path="/provider"
-          element={
-            <ProviderLayout>
-              <ProviderPage />
-            </ProviderLayout>
-          }
-        />
-
-        {/* Admin Routes */}
-        {/* <Route path="/admin" element={<AdminPage />} /> */}
-
-        {/* Customer Routes */}
-        {/* <Route path="/customer" element={<CustomerPage />} /> */}
-
-        {/* Default Route */}
-        <Route path="/" element={<h1>Welcome to Hotel App</h1>} />
-      </Routes>
-    </BrowserRouter>
-  );
-}
+export default router;
