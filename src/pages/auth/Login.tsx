@@ -1,151 +1,113 @@
-import React, { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
-import { Eye, EyeOff } from "lucide-react";
-import AuthLayout from "../components/auth/AuthLayout";
+import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
+import './Login.scss';
 
 const Login: React.FC = () => {
-  const navigate = useNavigate();
   const [showPassword, setShowPassword] = useState(false);
   const [formData, setFormData] = useState({
-    email: "",
-    password: "",
-  });
-  const [errors, setErrors] = useState({
-    email: "",
-    password: "",
+    email: '',
+    password: ''
   });
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-    setFormData((prev) => ({
-      ...prev,
-      [name]: value,
-    }));
-    // Clear error when user starts typing
-    if (errors[name as keyof typeof errors]) {
-      setErrors((prev) => ({
-        ...prev,
-        [name]: "",
-      }));
-    }
+    setFormData({
+      ...formData,
+      [e.target.name]: e.target.value
+    });
   };
 
-  const validateForm = () => {
-    const newErrors = {
-      email: "",
-      password: "",
-    };
-
-    if (!formData.email) {
-      newErrors.email = "Email is required";
-    } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
-      newErrors.email = "Email is invalid";
-    }
-
-    if (!formData.password) {
-      newErrors.password = "Password is required";
-    } else if (formData.password.length < 6) {
-      newErrors.password = "Password must be at least 6 characters";
-    }
-
-    setErrors(newErrors);
-    return !newErrors.email && !newErrors.password;
-  };
-
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    
-    if (validateForm()) {
-      try {
-        // API call would go here
-        console.log("Login data:", formData);
-        navigate("/dashboard");
-      } catch (error) {
-        console.error("Login error:", error);
-      }
-    }
+    // Handle login logic here
+    console.log('Login submitted:', formData);
   };
 
   return (
-    <AuthLayout>
-      <div className="w-full max-w-md">
-        <h2 className="text-4xl font-bold text-green-700 mb-8">Login</h2>
-
-        <form onSubmit={handleSubmit} className="space-y-6">
-          {/* Email Input */}
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
-              Email
-            </label>
-            <input
-              type="email"
-              name="email"
-              value={formData.email}
-              onChange={handleChange}
-              placeholder="example@gmail.com"
-              className={`w-full px-4 py-3 border ${
-                errors.email ? "border-red-500" : "border-gray-300"
-              } rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500`}
-            />
-            {errors.email && (
-              <p className="mt-1 text-sm text-red-500">{errors.email}</p>
-            )}
-          </div>
-
-          {/* Password Input */}
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
-              Password
-            </label>
-            <div className="relative">
-              <input
-                type={showPassword ? "text" : "password"}
-                name="password"
-                value={formData.password}
-                onChange={handleChange}
-                placeholder="********"
-                className={`w-full px-4 py-3 border ${
-                  errors.password ? "border-red-500" : "border-gray-300"
-                } rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500`}
-              />
-              <button
-                type="button"
-                onClick={() => setShowPassword(!showPassword)}
-                className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500"
-              >
-                {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
-              </button>
+    <div className="auth-page">
+      <div className="auth-container">
+        {/* Left Side - Form */}
+        <div className="auth-form-section">
+          <div className="auth-form-wrapper">
+            {/* Logo */}
+            <div className="auth-logo">
+              <div className="logo-icon"></div>
+              <div className="logo-text">
+                <span className="logo-title">MyDearProperty</span>
+                <span className="logo-subtitle">Convert Dreams into Reality</span>
+              </div>
             </div>
-            {errors.password && (
-              <p className="mt-1 text-sm text-red-500">{errors.password}</p>
-            )}
-          </div>
 
-          {/* Login Button */}
-          <button
-            type="submit"
-            className="w-full bg-green-700 text-white py-3 rounded-lg font-semibold hover:bg-green-800 transition"
-          >
-            Login
-          </button>
+            {/* Title */}
+            <h1 className="auth-title">Login</h1>
 
-          {/* Links */}
-          <div className="flex justify-between items-center text-sm">
-            <span className="text-gray-600">Forgot password?</span>
-            <Link to="/forgot-password" className="text-green-700 hover:text-green-800 font-medium">
-              Reset now
-            </Link>
-          </div>
+            {/* Form */}
+            <form onSubmit={handleSubmit} className="auth-form">
+              <div className="form-group">
+                <label htmlFor="email">Email</label>
+                <input
+                  type="email"
+                  id="email"
+                  name="email"
+                  placeholder="example@gmail.com"
+                  value={formData.email}
+                  onChange={handleChange}
+                  required
+                />
+              </div>
 
-          <div className="text-center text-sm text-gray-600">
-            Don't have an account?{" "}
-            <Link to="/register" className="text-green-700 hover:text-green-800 font-medium">
-              Register now
-            </Link>
+              <div className="form-group">
+                <label htmlFor="password">Password</label>
+                <div className="password-input-wrapper">
+                  <input
+                    type={showPassword ? 'text' : 'password'}
+                    id="password"
+                    name="password"
+                    placeholder="••••••••"
+                    value={formData.password}
+                    onChange={handleChange}
+                    required
+                  />
+                  <button
+                    type="button"
+                    className="password-toggle"
+                    onClick={() => setShowPassword(!showPassword)}
+                  >
+                    {showPassword ? '👁️' : '👁️‍🗨️'}
+                  </button>
+                </div>
+              </div>
+
+              <button type="submit" className="submit-btn">
+                Login
+              </button>
+
+              <div className="form-links">
+                <span className="forgot-link">Forgot password?</span>
+                <Link to="/reset-password" className="reset-link">Reset now</Link>
+              </div>
+
+              <div className="register-prompt">
+                Don't have an account? <Link to="/register">Register now</Link>
+              </div>
+            </form>
           </div>
-        </form>
+        </div>
+
+        {/* Right Side - Info */}
+        <div className="auth-info-section">
+          <div className="info-content">
+            <h2>Sell or Rent your Property For Free</h2>
+            <h3>30 Lac+ Home Owners Trust Us</h3>
+            <p>
+              I posted a property ad on MyDearProperty, an efficient real estate platform. 
+              Despite my busy schedule, they ensured timely communication, keeping me updated 
+              through emails and messages. They successfully found a tenant for my rental 
+              property that perfectly matched my requirements.
+            </p>
+          </div>
+        </div>
       </div>
-    </AuthLayout>
+    </div>
   );
 };
 

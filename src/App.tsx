@@ -1,28 +1,31 @@
-import { RouterProvider } from "react-router-dom";
-import router from "./routes/routes";
-import { Toaster } from "react-hot-toast";
-import PopupReminder from "./components/common/popupReminder/PopupReminder";
-// import AutoRecaptcha from "./components/common/AutoRecaptcha";
-import { AutoRecaptcha } from "./components/common/AutoRecaptcha";
+import React from 'react';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import Nav from './components/common/header/Nav';
+import Footer from './components/common/footer/footer';
+import Home from './pages/auth/Home';
+import Login from './pages/auth/Login';
+import Register from './pages/auth/Register';
+import './App.scss';
 
-
-import { GoogleReCaptchaProvider } from "react-google-recaptcha-v3";
-
-const RECAPTCHA_SITE_KEY = import.meta.env.VITE_GOOGLE_RECAPTCHA_SITE_KEY;
-
-
-function App() {
+const App: React.FC = () => {
   return (
-    <GoogleReCaptchaProvider reCaptchaKey={RECAPTCHA_SITE_KEY}>
-      <Toaster position="top-center" reverseOrder={false} />
-      <PopupReminder />
-      <AutoRecaptcha />
-      <RouterProvider router={router} />
-    </GoogleReCaptchaProvider>
+    <Router>
+      <div className="app">
+        <Nav />
+        <main>
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/register" element={<Register />} />
+            {/* Add other routes as needed */}
+          </Routes>
+        </main>
+        <Footer />
+      </div>
+    </Router>
   );
-}
+};
 
 export default App;
-
 
 
