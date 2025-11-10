@@ -1,19 +1,14 @@
 // src/routes/router.tsx
+export default router;
+
 import { createBrowserRouter } from "react-router-dom";
-import AppLayout from "../components/layout/AppLayout";
 import Home from "../pages/Home";
 import About from "../pages/About";
-import NotFound from "../pages/NotFound";
+
 const router = createBrowserRouter([
-  {
-    path: "/",
-    element: <AppLayout />,
-    children: [
-      { path: "/", element: <Home /> },
-      { path: "/about", element: <About /> },
-      { path: "*", element: <NotFound /> },
-    ],
-  },
+  { path: "/", element: <Home /> },
+  { path: "/about", element: <About /> },
 ]);
 
 export default router;
+

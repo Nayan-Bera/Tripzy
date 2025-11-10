@@ -1,5 +1,5 @@
 import { RouterProvider } from "react-router-dom";
-import router from "./routes/router";
+import router from "./routes/routes";
 import { Toaster } from "react-hot-toast";
 import PopupReminder from "./components/common/popupReminder/PopupReminder";
 // import AutoRecaptcha from "./components/common/AutoRecaptcha";
