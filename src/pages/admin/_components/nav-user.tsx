@@ -1,13 +1,5 @@
 "use client";
 
-import {
-  IconCreditCard,
-  IconDotsVertical,
-  IconLogout,
-  IconNotification,
-  IconUserCircle,
-} from "@tabler/icons-react";
-
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import {
   DropdownMenu,
@@ -24,6 +16,19 @@ import {
   SidebarMenuItem,
   useSidebar,
 } from "@/components/ui/sidebar";
+import {
+  Bell,
+  CreditCard,
+  LogOut,
+  MoreVertical,
+  UserCircle,
+} from "lucide-react";
+import { Link } from "react-router-dom";
+export type usertype = {
+  name: string;
+  email: string;
+  avatar: string;
+};
 
 export function NavUser({ user }: { user: usertype }) {
   const { isMobile } = useSidebar();
@@ -44,12 +49,14 @@ export function NavUser({ user }: { user: usertype }) {
                 </AvatarFallback>
               </Avatar>
               <div className="grid flex-1 text-left text-sm leading-tight">
-                <span className="truncate font-medium capitalize">{user.name}</span>
+                <span className="truncate font-medium capitalize">
+                  {user.name}
+                </span>
                 <span className="text-muted-foreground truncate text-xs">
                   {user.email}
                 </span>
               </div>
-              <IconDotsVertical className="ml-auto size-4" />
+              <MoreVertical className="ml-auto size-4" />
             </SidebarMenuButton>
           </DropdownMenuTrigger>
           <DropdownMenuContent
@@ -67,7 +74,9 @@ export function NavUser({ user }: { user: usertype }) {
                   </AvatarFallback>
                 </Avatar>
                 <div className="grid flex-1 text-left text-sm leading-tight">
-                  <span className="truncate font-medium capitalize">{user.name}</span>
+                  <span className="truncate font-medium capitalize">
+                    {user.name}
+                  </span>
                   <span className="text-muted-foreground truncate text-xs">
                     {user.email}
                   </span>
@@ -77,26 +86,23 @@ export function NavUser({ user }: { user: usertype }) {
             <DropdownMenuSeparator />
             <DropdownMenuGroup>
               <DropdownMenuItem>
-                <Link
-                  href="/admin/account"
-                  className="flex items-center gap-2"
-                >
-                  <IconUserCircle />
+                <Link to="/profile" className="flex items-center gap-2">
+                  <UserCircle />
                   Account
                 </Link>
               </DropdownMenuItem>
               <DropdownMenuItem>
-                <IconCreditCard />
+                <CreditCard />
                 Billing
               </DropdownMenuItem>
               <DropdownMenuItem>
-                <IconNotification />
+                <Bell />
                 Notifications
               </DropdownMenuItem>
             </DropdownMenuGroup>
             <DropdownMenuSeparator />
-            <DropdownMenuItem onClick={() => handleLogout()}>
-              <IconLogout />
+            <DropdownMenuItem>
+              <LogOut />
               Log out
             </DropdownMenuItem>
           </DropdownMenuContent>

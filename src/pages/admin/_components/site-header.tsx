@@ -2,7 +2,6 @@
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { SidebarTrigger } from "@/components/ui/sidebar";
-import handleLogout from "@/lib/logout";
 export function SiteHeader() {
 	return (
 		<header className="flex h-(--header-height) shrink-0 items-center gap-2 border-b transition-[width,height] ease-linear group-has-data-[collapsible=icon]/sidebar-wrapper:h-(--header-height) print:hidden">
@@ -15,7 +14,6 @@ export function SiteHeader() {
 				<h1 className="text-base font-medium">Admin Dashboard</h1>
 				<div className="ml-auto flex items-center gap-2">
 					<Button
-						onClick={() => handleLogout()}
 						variant="ghost"
 						size="sm"
 					>
