@@ -1,100 +1,126 @@
-import React from 'react';
+import React, { useState } from 'react';
 import './Home.scss';
 
 const Home: React.FC = () => {
+  const [activeFilter, setActiveFilter] = useState('all');
+  const [location, setLocation] = useState('');
+  const [propertyType, setPropertyType] = useState('');
+  const [minPrice, setMinPrice] = useState('');
+  const [maxPrice, setMaxPrice] = useState('');
+
+  const handleSearch = () => {
+    if (!location) {
+      alert('Please enter a location to search');
+      return;
+    }
+    console.log('Searching...', { location, propertyType, minPrice, maxPrice, activeFilter });
+  };
+
   return (
     <div className="home-page">
       {/* Hero Section */}
-      <section className="hero-section">
-        <div className="hero-content">
-          <h1 className="hero-title">Instantly Rent</h1>
-          <p className="hero-subtitle">Your Property, Your Story, Our Commitment.</p>
-          
-          {/* Filter Tabs */}
-          <div className="filter-tabs">
-            <button className="tab-btn active">All</button>
-            <button className="tab-btn">Buy</button>
-            <button className="tab-btn">Rent</button>
-            <button className="tab-btn">Sale</button>
-          </div>
+      <section className="hero">
+        <h1>Instantly Rent</h1>
+        <p>Your Property, Your Story, Our Commitment.</p>
 
-          {/* Search Bar */}
-          <div className="search-container">
-            <div className="search-field">
-              <span className="search-icon">📍</span>
-              <input 
-                type="text" 
-                placeholder="Location, City Name" 
-                className="search-input"
-              />
-            </div>
+        {/* Filter Tabs */}
+        <div className="filter-tabs">
+          <button 
+            className={`tab ${activeFilter === 'all' ? 'active' : ''}`}
+            onClick={() => setActiveFilter('all')}
+          >
+            All
+          </button>
+          <button 
+            className={`tab ${activeFilter === 'buy' ? 'active' : ''}`}
+            onClick={() => setActiveFilter('buy')}
+          >
+            Buy
+          </button>
+          <button 
+            className={`tab ${activeFilter === 'rent' ? 'active' : ''}`}
+            onClick={() => setActiveFilter('rent')}
+          >
+            Rent
+          </button>
+          <button 
+            className={`tab ${activeFilter === 'sale' ? 'active' : ''}`}
+            onClick={() => setActiveFilter('sale')}
+          >
+            Sale
+          </button>
+        </div>
 
-            <div className="search-field">
-              <span className="search-icon">☰</span>
-              <select className="search-select">
-                <option>Select Property Type</option>
-                <option>Apartment</option>
-                <option>House</option>
-                <option>Villa</option>
-                <option>Office</option>
-              </select>
-            </div>
-
-            <div className="search-field">
-              <span className="search-icon">₹</span>
-              <select className="search-select">
-                <option>Minimum Price</option>
-                <option>10,000</option>
-                <option>25,000</option>
-                <option>50,000</option>
-                <option>1,00,000</option>
-              </select>
-            </div>
-
-            <div className="search-field">
-              <span className="search-icon">₹</span>
-              <select className="search-select">
-                <option>Maximum Price</option>
-                <option>50,000</option>
-                <option>1,00,000</option>
-                <option>2,50,000</option>
-                <option>5,00,000</option>
-              </select>
-            </div>
-
-            <button className="search-btn">Search</button>
-          </div>
+        {/* Search Bar */}
+        <div className="search-container">
+          <input 
+            type="text" 
+            className="search-input" 
+            placeholder="📍 Location, City Name"
+            value={location}
+            onChange={(e) => setLocation(e.target.value)}
+          />
+          <select 
+            className="search-select"
+            value={propertyType}
+            onChange={(e) => setPropertyType(e.target.value)}
+          >
+            <option value="">☰ Select Property Type</option>
+            <option value="apartment">Apartment</option>
+            <option value="house">House</option>
+            <option value="villa">Villa</option>
+          </select>
+          <select 
+            className="search-select"
+            value={minPrice}
+            onChange={(e) => setMinPrice(e.target.value)}
+          >
+            <option value="">₹ Minimum Price</option>
+            <option value="10000">₹ 10,000</option>
+            <option value="25000">₹ 25,000</option>
+            <option value="50000">₹ 50,000</option>
+          </select>
+          <select 
+            className="search-select"
+            value={maxPrice}
+            onChange={(e) => setMaxPrice(e.target.value)}
+          >
+            <option value="">₹ Maximum Price</option>
+            <option value="50000">₹ 50,000</option>
+            <option value="100000">₹ 1,00,000</option>
+            <option value="200000">₹ 2,00,000</option>
+          </select>
+          <button className="search-btn" onClick={handleSearch}>
+            Search
+          </button>
         </div>
       </section>
 
       {/* Stats Section */}
-      <section className="stats-section">
+      <section className="stats">
         <div className="stat-card">
-          <h2 className="stat-number">1,000+</h2>
-          <p className="stat-description">
+          <div className="stat-number">1,000+</div>
+          <div className="stat-text">
             Exclusive & Premium Properties Available Just for You!
-          </p>
+          </div>
         </div>
-
         <div className="stat-card">
-          <h2 className="stat-number">100%</h2>
-          <p className="stat-description">
+          <div className="stat-number">100%</div>
+          <div className="stat-text">
             MDP Verified Dream Homes – Safe, Secure & Trustworthy!
-          </p>
+          </div>
         </div>
-
         <div className="stat-card">
-          <h2 className="stat-number">200+</h2>
-          <p className="stat-description">
+          <div className="stat-number">200+</div>
+          <div className="stat-text">
             Top Properties in the Best & Prime Locations!
-          </p>
+          </div>
         </div>
-
         <div className="stat-card">
-          <h2 className="stat-number">149+</h2>
-          <p className="stat-description">
+          <div className="stat-number">149+</div>
+          <div className="stat-text">
             Find Your Dream Property – Perfectly Tailored for You!
-          </p>
+          </div>
         </div>
       </section>
     </div>

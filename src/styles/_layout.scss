@@ -1,0 +1,162 @@
+// ===== GLOBAL LAYOUT RESET =====
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  font-size: 16px;
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', sans-serif;
+  overflow-x: hidden;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  background: #ffffff;
+  color: #2c3e50;
+  line-height: 1.6;
+}
+
+// ===== MAIN APP CONTAINER =====
+#root {
+  width: 100%;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.app-container {
+  width: 100%;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+// ===== CONTENT WRAPPER =====
+.main-content {
+  flex: 1;
+  width: 100%;
+}
+
+// ===== REMOVE DEFAULT MARGINS/PADDINGS =====
+.page-wrapper {
+  width: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+// ===== FULL WIDTH SECTIONS =====
+section {
+  width: 100%;
+}
+
+// ===== CONTAINER UTILITIES =====
+.container-full {
+  width: 100%;
+  padding: 0;
+  margin: 0;
+}
+
+.container-wide {
+  max-width: 1600px;
+  width: 100%;
+  margin: 0 auto;
+  padding: 0 60px;
+}
+
+.container-standard {
+  max-width: 1400px;
+  width: 100%;
+  margin: 0 auto;
+  padding: 0 60px;
+}
+
+.container-narrow {
+  max-width: 1200px;
+  width: 100%;
+  margin: 0 auto;
+  padding: 0 60px;
+}
+
+// ===== RESPONSIVE CONTAINERS =====
+@media (max-width: 1440px) {
+  .container-wide,
+  .container-standard,
+  .container-narrow {
+    padding: 0 50px;
+  }
+}
+
+@media (max-width: 1024px) {
+  .container-wide,
+  .container-standard,
+  .container-narrow {
+    padding: 0 40px;
+  }
+}
+
+@media (max-width: 768px) {
+  .container-wide,
+  .container-standard,
+  .container-narrow {
+    padding: 0 20px;
+  }
+}
+
+// ===== UTILITY CLASSES =====
+.w-full {
+  width: 100%;
+}
+
+.h-full {
+  height: 100%;
+}
+
+.min-h-screen {
+  min-height: 100vh;
+}
+
+// ===== SMOOTH TRANSITIONS =====
+a,
+button {
+  transition: all 0.3s ease;
+}
+
+// ===== FOCUS STYLES =====
+button:focus,
+input:focus,
+select:focus,
+textarea:focus {
+  outline: none;
+}
+
+// ===== SCROLLBAR STYLING =====
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #888;
+  border-radius: 5px;
+
+  &:hover {
+    background: #555;
+  }
+}
+  .nav-links {
+    display: none;
+  }
+
+  .btn-prime,
+  .btn-post {
+    padding: 8px 16px;
+    font-size: 13px;
+  }
