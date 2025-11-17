@@ -10,7 +10,7 @@ const NoData = ({ imageSrc, heading, text, className }: NoDataProps) => {
   return (
     <div className={className}>
       <div className="flex justify-center">
-        <Image src={imageSrc} alt="My Image" width={500} height={200} />
+        <img src={imageSrc} alt="My Image" width={500} height={200} />
       </div>
       <h1 className="flex justify-center text-red-700 text-2xl mt-2">{heading}</h1>
       <p className="flex justify-center">{text}</p>

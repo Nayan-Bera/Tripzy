@@ -22,7 +22,7 @@ export default function AppRoutes() {
         />
 
         {/* Admin Routes */}
-        {/* <Route path="/admin" element={<AdminPage />} /> */}
+        <Route path="/admin" element={<AdminPage />} />
 
         {/* Customer Routes */}
         {/* <Route path="/customer" element={<CustomerPage />} /> */}

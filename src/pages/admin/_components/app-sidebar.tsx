@@ -1,143 +1,143 @@
-"use client";
-
-import {
-	IconBuilding,
-	IconCamera,
-	IconChartBar,
-	IconDashboard,
-	IconFileAi,
-	IconFileDescription,
-	IconFolder,
-	IconHelp,
-	IconMapPins,
-	IconSearch,
-	IconSettings,
-	IconUsers,
-	IconUsersGroup
-} from "@tabler/icons-react";
 import * as React from "react";
 
-import { DetailsResponse } from "@/app/customer/_components/app-sidebar";
 import {
-	Sidebar,
-	SidebarContent,
-	SidebarFooter,
-	SidebarHeader,
-	SidebarMenu,
-	SidebarMenuButton,
-	SidebarMenuItem,
+  Sidebar,
+  SidebarContent,
+  SidebarFooter,
+  SidebarHeader,
+  SidebarMenu,
+  SidebarMenuButton,
+  SidebarMenuItem,
 } from "@/components/ui/sidebar";
-import Image from "next/image";
 import { NavMain } from "./nav-main";
 import { NavSecondary } from "./nav-secondary";
 import { NavUser } from "./nav-user";
+import {
+  Building,
+  Camera,
+  ChartBar,
+  File,
+  FileCode,
+  Folder,
+  HelpCircle,
+  LayoutDashboardIcon,
+  MapPinPlus,
+  Search,
+  Settings,
+  UserRound,
+  Users,
+  UsersRound,
+} from "lucide-react";
 
 const ROLES = {
   SUPERADMIN: "superadmin",
   ACCOUNTS: "accounts",
   CIVIL: "civil",
   BDE: "bde",
-};
+} as const;
+
+type Role = (typeof ROLES)[keyof typeof ROLES];
+
+interface User {
+  id: string;
+  name: string;
+  email: string;
+  role: Role;
+  avatar: string;
+}
 
 const data = {
   navMain: [
     {
       title: "Dashboard",
       url: "/admin",
-      icon: IconDashboard,
+      icon: LayoutDashboardIcon,
       roles: [ROLES.SUPERADMIN, ROLES.ACCOUNTS, ROLES.CIVIL, ROLES.BDE], // all
     },
     {
       title: "Users",
       url: "/admin/add-user",
-      icon: IconUsers,
+      icon: Users,
       roles: [ROLES.SUPERADMIN],
     },
     {
       title: "Bookings",
       url: "/admin/bookings",
-      icon: IconChartBar,
+      icon: ChartBar,
       roles: [ROLES.SUPERADMIN, ROLES.ACCOUNTS],
     },
     {
       title: "Transactions",
       url: "/admin/transactions",
-      icon: IconFolder,
+      icon: Folder,
       roles: [ROLES.SUPERADMIN, ROLES.ACCOUNTS],
     },
-    // {
-    //   title: "My Profile",
-    //   url: "#",
-    //   icon: IconUsers,
-    //   roles: [ROLES.SUPERADMIN, ROLES.ACCOUNTS, ROLES.CIVIL, ROLES.BDE], // all can see
-    // },
     {
       title: "Add Roles",
       url: "/admin/add-role",
-      icon: IconUsers,
+      icon: Users,
       roles: [ROLES.SUPERADMIN],
     },
     {
       title: "Add Slab",
       url: "/admin/add-slab-details",
-      icon: IconFolder,
+      icon: Folder,
       roles: [ROLES.SUPERADMIN, ROLES.ACCOUNTS],
     },
     {
       title: "Query",
       url: "/admin/query",
-      icon: IconFolder,
+      icon: Folder,
       roles: [ROLES.SUPERADMIN, ROLES.ACCOUNTS, ROLES.BDE],
     },
     {
       title: "Add Elevation",
       url: "/admin/elevation-add",
-      icon: IconBuilding,
+      icon: Building,
       roles: [ROLES.SUPERADMIN, ROLES.CIVIL],
     },
     {
       title: "Add Location",
       url: "/admin/location-add",
-      icon: IconBuilding,
+      icon: Building,
       roles: [ROLES.SUPERADMIN, ROLES.CIVIL],
     },
     {
       title: "Add Offers",
       url: "/admin/add-offers",
-      icon: IconFolder,
+      icon: Folder,
       roles: [ROLES.SUPERADMIN, ROLES.ACCOUNTS],
     },
     {
       title: "Add Agents",
       url: "/admin/add-agents",
-      icon: IconUsers,
+      icon: Users,
       roles: [ROLES.SUPERADMIN],
     },
     {
       title: "Add lands",
       url: "/admin/landbank",
-      icon: IconMapPins,
+      icon: MapPinPlus,
       roles: [ROLES.SUPERADMIN, ROLES.BDE],
     },
     {
       title: "Add leads",
       url: "/admin/leads",
-      icon: IconUsersGroup,
-	  roles: [ROLES.SUPERADMIN, ROLES.BDE],
+      icon: UsersRound,
+      roles: [ROLES.SUPERADMIN, ROLES.BDE],
     },
-       {
+    {
       title: "Gst Details",
       url: "/admin/gst",
-      icon: IconUsersGroup,
-	  roles: [ROLES.SUPERADMIN, ROLES.ACCOUNTS],
+      icon: UserRound,
+      roles: [ROLES.SUPERADMIN, ROLES.ACCOUNTS],
     },
-  
   ],
 
   navClouds: [
     {
       title: "Capture",
-      icon: IconCamera,
+      icon: Camera,
       isActive: true,
       url: "#",
       items: [
@@ -147,7 +147,7 @@ const data = {
     },
     {
       title: "Proposal",
-      icon: IconFileDescription,
+      icon: File,
       url: "#",
       items: [
         { title: "Active Proposals", url: "#" },
@@ -156,7 +156,7 @@ const data = {
     },
     {
       title: "Prompts",
-      icon: IconFileAi,
+      icon: FileCode,
       url: "#",
       items: [
         { title: "Active Proposals", url: "#" },
@@ -169,63 +169,37 @@ const data = {
     {
       title: "Settings",
       url: "#",
-      icon: IconSettings,
+      icon: Settings,
     },
     {
       title: "Get Help",
       url: "#",
-      icon: IconHelp,
+      icon: HelpCircle,
     },
     {
       title: "Search",
       url: "#",
-      icon: IconSearch,
+      icon: Search,
     },
   ],
 };
 
-async function fetchUserDetails() {
-  const res = await fetch("/api/user/details", {
-    cache: "no-store",
-    headers: {
-      "Content-Type": "application/json",
-    },
-  });
+// 🔒 Static mock user (change as you like)
+const mockUser: User = {
+  id: "1",
+  name: "John Doe",
+  email: "john@example.com",
+  role: ROLES.SUPERADMIN,
+  avatar: "/path/to/avatar.png",
+};
 
-  if (!res.ok) throw new Error("Failed to fetch user details");
-  return res.json();
-}
-export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
-  const [userData, setUserData] = React.useState<DetailsResponse | null>(null);
-  const [loading, setLoading] = React.useState(true);
-  const loadUser = React.useCallback(async () => {
-    try {
-      setLoading(true);
-      const data = await fetchUserDetails();
-      setUserData(data);
-    } catch (err) {
-      console.error("Error fetching user:", err);
-    } finally {
-      setLoading(false);
-    }
-  }, []);
-
-  React.useEffect(() => {
-    loadUser();
-
-    const handler = () => loadUser();
-    window.addEventListener("userUpdated", handler);
-
-    return () => window.removeEventListener("userUpdated", handler);
-  }, [loadUser]);
-
-  const role = userData?.user?.role ?? "guest";
+export function AppSidebar(props: React.ComponentProps<typeof Sidebar>) {
+  const role: Role = mockUser.role;
 
   const filteredNavMain = data.navMain.filter((item) =>
     item.roles.includes(role)
   );
 
-  console.log(userData);
   return (
     <Sidebar collapsible="offcanvas" {...props}>
       <SidebarHeader>
@@ -236,7 +210,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
               className="data-[slot=sidebar-menu-button]:!p-1.5"
             >
               <a href="#">
-                <Image
+                <img
                   src="/assets/logo-mdc.png"
                   alt="MyDearCity Builders"
                   width={100}
@@ -248,16 +222,17 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
           </SidebarMenuItem>
         </SidebarMenu>
       </SidebarHeader>
+
       <SidebarContent>
         <NavMain items={filteredNavMain} />
-        <NavSecondary items={data.navSecondary} className="mt-auto cursor:pointer" />
+        <NavSecondary
+          items={data.navSecondary}
+          className="mt-auto cursor-pointer"
+        />
       </SidebarContent>
+
       <SidebarFooter>
-        {loading ? (
-          <p className="text-sm text-muted-foreground">Loading...</p>
-        ) : (
-          userData && <NavUser user={userData.user} />
-        )}
+        <NavUser user={mockUser} />
       </SidebarFooter>
     </Sidebar>
   );
