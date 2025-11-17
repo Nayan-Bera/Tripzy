@@ -1,6 +1,4 @@
 import React, { useState } from "react";
-import Hero from "../../components/Hero";
-import RoomCard from "../../components/RoomCard";
 import { Room } from "../../types";
 
 const sampleRooms: Room[] = [
@@ -18,12 +16,12 @@ const Home: React.FC = () => {
 
   return (
     <>
-      <Hero />
+      {/* <Hero /> */}
       <section className="container-custom py-10">
         <h2 className="text-2xl font-semibold mb-6">Available rooms</h2>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-          {rooms.map(r => <RoomCard key={r.id} room={r} onBook={handleBook} />)}
+          {/* {rooms.map(r => <RoomCard key={r.id} room={r} onBook={handleBook} />)} */}
         </div>
       </section>
     </>
