@@ -1,34 +1,29 @@
+// src/routes/routes.tsx
+import React from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 
-// Layout
-import ProviderLayout from "../layouts/ProviderLayout";
+// import NotFoundPage from "../pages/data-not-found";     // if you have it
 
-// Pages (example placeholders)
-import ProviderPage from "../pages/provider/page";
-
+import { AdminRoutes } from "./private/admin-routes";
+import { ProviderRoutes } from "./private/provider-routes";
+import PrivateRoute from "./private/PrivateRoute";
 
 export default function AppRoutes() {
   return (
     <BrowserRouter>
       <Routes>
-        {/* Provider Routes */}
-        <Route
-          path="/provider"
-          element={
-            <ProviderLayout>
-              <ProviderPage />
-            </ProviderLayout>
-          }
-        />
+        {/* Public */}
+        {/* <Route path="/" element={<HomePage />} /> */}
+        {/* <Route path="/login" element={<LoginPage />} /> etc. */}
 
-        {/* Admin Routes */}
-        <Route path="/admin" element={<AdminPage />} />
+        {/* Everything inside here is PRIVATE (admin + provider + user) */}
+        <Route element={<PrivateRoute />}>
+          <AdminRoutes />
+          <ProviderRoutes />
+        </Route>
 
-        {/* Customer Routes */}
-        {/* <Route path="/customer" element={<CustomerPage />} /> */}
-
-        {/* Default Route */}
-        <Route path="/" element={<h1>Welcome to Hotel App</h1>} />
+        {/* 404 */}
+        {/* <Route path="*" element={<NotFoundPage />} /> */}
       </Routes>
     </BrowserRouter>
   );
