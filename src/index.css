@@ -1,11 +1,10 @@
 /*  @reference tailwind; */
 /*  ---break--- */
+@import "tailwindcss";
 @plugin "tailwindcss-animate";
 /* @tailwind base;
 @tailwind components;
 @tailwind utilities; */
-
-@import "tailwindcss";
 
 /*  ---break--- */
 
@@ -14,12 +13,20 @@
 /* .container-custom {
   @apply container mx-auto px-4 sm:px-6 lg:px-8;
 } */
+html,
+body,
+#root {
+  height: 100%;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+}
 
-body {
+/* body {
 	font-family: "Inter", sans-serif;
 	-webkit-font-smoothing: antialiased;
 	-moz-osx-font-smoothing: grayscale;
-}
+} */
 
 h1,
 h2,

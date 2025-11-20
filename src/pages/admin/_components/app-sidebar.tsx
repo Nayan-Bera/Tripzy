@@ -96,42 +96,7 @@ const data = {
       icon: Building,
       roles: [ROLES.SUPERADMIN, ROLES.CIVIL],
     },
-    {
-      title: "Add Location",
-      url: "/admin/location-add",
-      icon: Building,
-      roles: [ROLES.SUPERADMIN, ROLES.CIVIL],
-    },
-    {
-      title: "Add Offers",
-      url: "/admin/add-offers",
-      icon: Folder,
-      roles: [ROLES.SUPERADMIN, ROLES.ACCOUNTS],
-    },
-    {
-      title: "Add Agents",
-      url: "/admin/add-agents",
-      icon: Users,
-      roles: [ROLES.SUPERADMIN],
-    },
-    {
-      title: "Add lands",
-      url: "/admin/landbank",
-      icon: MapPinPlus,
-      roles: [ROLES.SUPERADMIN, ROLES.BDE],
-    },
-    {
-      title: "Add leads",
-      url: "/admin/leads",
-      icon: UsersRound,
-      roles: [ROLES.SUPERADMIN, ROLES.BDE],
-    },
-    {
-      title: "Gst Details",
-      url: "/admin/gst",
-      icon: UserRound,
-      roles: [ROLES.SUPERADMIN, ROLES.ACCOUNTS],
-    },
+    
   ],
 
   navClouds: [

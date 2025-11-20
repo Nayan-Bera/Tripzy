@@ -1,18 +1,8 @@
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import ProviderLayout from "./layouts/ProviderLayout";
-import Home from "./pages/home/Home";
+// src/App.tsx
+import AppRoutes from "./routes/route";
 
 function App() {
-  return (
-    <Router>
-      <ProviderLayout>
-        <Routes>
-          <Route path="/" element={<Home />} />
-          {/* add other routes */}
-        </Routes>
-      </ProviderLayout>
-    </Router>
-  );
+  return <AppRoutes />;
 }
 
 export default App;
