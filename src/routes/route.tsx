@@ -15,6 +15,7 @@ import Dashboard from "../pages/admin/page";
 import ProviderLayout from "../layouts/ProviderLayout";
 import ProviderPage from "../pages/provider/page";
 import LoginPage from "@/pages/auth/login/page";
+import SignupPage from "@/pages/auth/signup/page";
 
 export default function AppRoutes() {
   return (
@@ -23,6 +24,8 @@ export default function AppRoutes() {
         {/* Redirect "/" -> "/admin" for convenience */}
         <Route path="/" element={<Navigate to="/admin" replace />} />
         <Route path="/login" element={<LoginPage />} />
+        <Route path="/signup" element={<SignupPage />} />
+        
 
         {/* All protected routes */}
         <Route element={<PrivateRoute />}>
