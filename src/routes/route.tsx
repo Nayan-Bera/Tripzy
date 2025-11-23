@@ -16,6 +16,7 @@ import ProviderLayout from "../layouts/ProviderLayout";
 import ProviderPage from "../pages/provider/page";
 import LoginPage from "@/pages/auth/login/page";
 import SignupPage from "@/pages/auth/signup/page";
+import OTPPage from "@/pages/auth/otp/page";
 
 export default function AppRoutes() {
   return (
@@ -25,6 +26,7 @@ export default function AppRoutes() {
         <Route path="/" element={<Navigate to="/admin" replace />} />
         <Route path="/login" element={<LoginPage />} />
         <Route path="/signup" element={<SignupPage />} />
+        <Route path="/otp" element={<OTPPage />} />
         
 
         {/* All protected routes */}
