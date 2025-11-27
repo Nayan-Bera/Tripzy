@@ -1,5 +1,3 @@
-// src/pages/HomePage.tsx
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
@@ -9,6 +7,8 @@ import { Footer } from "./components/footer";
 import { Header } from "./components/Heder";
 import { HeroSection } from "./components/HeroSection";
 import { HowItWorksSection } from "./components/HowItsWoek";
+import { ReviewsSection } from "./components/Review";
+import { DealsSection } from "./components/Deals";
 
 
 
@@ -112,43 +112,7 @@ const hotelCategories = [
   },
 ];
 
-const deals = [
-  {
-    id: 1,
-    title: "Early Bird 30% Off",
-    description: "Book 30 days in advance and save big.",
-    code: "EARLY30",
-    expiry: "Valid till 31 Dec",
-  },
-  {
-    id: 2,
-    title: "Weekend Escape",
-    description: "Get 20% off on Fri–Sun bookings.",
-    code: "WEEKEND20",
-    expiry: "Limited time",
-  },
-];
 
-const reviews = [
-  {
-    id: 1,
-    name: "Alex Johnson",
-    avatar:
-      "https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg?auto=compress",
-    text: "Booking was seamless and the hotel was exactly as shown. Loved the experience!",
-    rating: 5,
-    stay: "Oceanview Resort, Bali",
-  },
-  {
-    id: 2,
-    name: "Priya Mehta",
-    avatar:
-      "https://images.pexels.com/photos/774909/pexels-photo-774909.jpeg?auto=compress",
-    text: "Great filters and very transparent pricing. Found the perfect family stay.",
-    rating: 4,
-    stay: "Family Suites, Paris",
-  },
-];
 
 
 
@@ -187,7 +151,7 @@ const PopularDestinationsSection: React.FC = () => {
                 alt={dest.name}
                 className="h-full w-full object-cover transition duration-500 group-hover:scale-105"
               />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent" />
+              <div className="absolute inset-0 bg-linear-to-t from-black/40 via-transparent to-transparent" />
             </div>
             <CardContent className="space-y-1 p-3">
               <h3 className="text-sm font-semibold">{dest.name}</h3>
@@ -209,7 +173,7 @@ const CategoriesSection: React.FC = () => {
         {hotelCategories.map((cat) => (
           <Card
             key={cat.id}
-            className="border-dashed bg-gradient-to-br from-sky-50 via-white to-teal-50"
+            className="border-dashed bg-linear-to-br from-sky-50 via-white to-teal-50"
           >
             <CardContent className="flex flex-col gap-2 p-4">
               <span className="text-2xl">{cat.icon}</span>
@@ -313,91 +277,8 @@ const FeaturedHotelsSection: React.FC = () => {
   );
 };
 
-// Deals / Offers
-const DealsSection: React.FC = () => {
-  return (
-    <section id="deals" className="mx-auto max-w-6xl space-y-6 px-4 py-10">
-      <div className="flex items-center justify-between">
-        <h2 className="text-xl font-semibold">Exclusive deals</h2>
-        <Button variant="ghost" size="sm">
-          All offers
-        </Button>
-      </div>
-
-      <div className="grid gap-4 md:grid-cols-2">
-        {deals.map((deal) => (
-          <Card
-            key={deal.id}
-            className="border-0 bg-gradient-to-r from-sky-500 to-teal-500 text-white"
-          >
-            <CardContent className="flex flex-col gap-3 p-4 md:flex-row md:items-center md:justify-between">
-              <div>
-                <h3 className="text-sm font-semibold">{deal.title}</h3>
-                <p className="text-xs opacity-90">{deal.description}</p>
-                <p className="mt-1 text-[11px] opacity-80">{deal.expiry}</p>
-              </div>
-              <div className="flex flex-col items-end gap-2">
-                <Badge variant="outline" className="border-white/60 text-xs">
-                  Code: {deal.code}
-                </Badge>
-                <Button variant="secondary" size="sm">
-                  Apply offer
-                </Button>
-              </div>
-            </CardContent>
-          </Card>
-        ))}
-      </div>
-    </section>
-  );
-};
-
-// Reviews (testimonials)
-const ReviewsSection: React.FC = () => {
-  return (
-    <section className="mx-auto max-w-6xl space-y-6 px-4 py-10">
-      <h2 className="text-xl font-semibold">Loved by travelers</h2>
-      <div className="grid gap-4 md:grid-cols-2">
-        {reviews.map((review) => (
-          <Card key={review.id} className="border-0 bg-muted/40">
-            <CardContent className="space-y-3 p-4">
-              <div className="flex items-center gap-3">
-                <Avatar className="h-9 w-9">
-                  <AvatarImage src={review.avatar} />
-                  <AvatarFallback>
-                    {review.name[0]}
-                    {review.name.split(" ")[1]?.[0]}
-                  </AvatarFallback>
-                </Avatar>
-                <div>
-                  <p className="text-sm font-semibold">{review.name}</p>
-                  <p className="text-[11px] text-muted-foreground">
-                    Stayed at {review.stay}
-                  </p>
-                </div>
-              </div>
-              <p className="text-sm text-muted-foreground">{review.text}</p>
-              <div className="flex items-center gap-1 text-xs">
-                {Array.from({ length: review.rating }).map((_, i) => (
-                  <Star
-                    key={i}
-                    className="h-3 w-3 fill-yellow-400 text-yellow-400"
-                  />
-                ))}
-              </div>
-            </CardContent>
-          </Card>
-        ))}
-      </div>
-    </section>
-  );
-};
 
 
-// Footer
-
-
-// ===== PAGE ROOT =====
 
 const HomePage: React.FC = () => {
   return (
