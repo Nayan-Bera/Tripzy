@@ -1,14 +1,14 @@
 // src/pages/HomePage.tsx
-import React from "react";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent } from "@/components/ui/card";
 import { Star } from "lucide-react";
+import React from "react";
+import { Footer } from "./components/footer";
 import { Header } from "./components/Heder";
+import { HeroSection } from "./components/HeroSection";
 import { HowItWorksSection } from "./components/HowItsWoek";
-import { Footer } from "./components/Footer";
 
 
 
@@ -155,87 +155,6 @@ const reviews = [
 // ===== COMPONENTS =====
 
 
-
-// Hero + Search (Aceternity-style subtle spotlight + floating card)
-const HeroSection: React.FC = () => {
-  return (
-    <section className="relative overflow-hidden border-b bg-gradient-to-b from-sky-50 via-white to-white">
-      {/* background grid / glow feel */}
-      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top,_#0ea5e966,_transparent_60%)] opacity-40" />
-      <div className="relative mx-auto flex max-w-6xl flex-col gap-10 px-4 pb-16 pt-12 md:flex-row md:items-center">
-        <div className="max-w-xl space-y-5">
-          <Badge variant="outline" className="rounded-full px-3 py-1">
-            ✨ New: Smart price alerts
-          </Badge>
-          <h1 className="text-3xl font-semibold leading-tight tracking-tight md:text-4xl">
-            Instantly book{" "}
-            <span className="bg-gradient-to-r from-sky-500 to-teal-500 bg-clip-text text-transparent">
-              hotels you love
-            </span>
-            , at prices you&apos;ll love more.
-          </h1>
-          <p className="text-sm text-muted-foreground md:text-base">
-            Discover verified stays, transparent prices, and flexible
-            cancellations in one modern booking experience.
-          </p>
-        </div>
-
-        {/* Search Card */}
-        <Card className="w-full max-w-md border-0 bg-white/90 shadow-xl shadow-sky-100 backdrop-blur">
-          <CardHeader>
-            <CardTitle className="text-base">Search your stay</CardTitle>
-          </CardHeader>
-          <CardContent className="space-y-3">
-            <div className="space-y-1">
-              <label className="text-xs font-medium text-muted-foreground">
-                Where are you going?
-              </label>
-              <Input placeholder="City, landmark or hotel name" />
-            </div>
-
-            <div className="grid grid-cols-2 gap-3">
-              <div className="space-y-1">
-                <label className="text-xs font-medium text-muted-foreground">
-                  Check-in
-                </label>
-                <Input type="date" />
-              </div>
-              <div className="space-y-1">
-                <label className="text-xs font-medium text-muted-foreground">
-                  Check-out
-                </label>
-                <Input type="date" />
-              </div>
-            </div>
-
-            <div className="grid grid-cols-2 gap-3">
-              <div className="space-y-1">
-                <label className="text-xs font-medium text-muted-foreground">
-                  Guests
-                </label>
-                <Input defaultValue="2 adults · 1 room" />
-              </div>
-              <div className="space-y-1">
-                <label className="text-xs font-medium text-muted-foreground">
-                  Trip type
-                </label>
-                <Input defaultValue="Leisure" />
-              </div>
-            </div>
-
-            <Button className="mt-2 w-full" size="lg">
-              Search Hotels
-            </Button>
-
-            <p className="text-[11px] text-muted-foreground">
-              🔒 No booking fees · Free cancellation on most rooms
-            </p>
-          </CardContent>
-        </Card>
-      </div>
-    </section>
-  );
-};
 
 // Popular Destinations (cards with images + hover)
 const PopularDestinationsSection: React.FC = () => {
