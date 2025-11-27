@@ -2,7 +2,6 @@ import {
   BrowserRouter,
   Routes,
   Route,
-  Navigate,
 } from "react-router-dom";
 
 import PrivateRoute from "./private/PrivateRoute";
@@ -17,13 +16,14 @@ import ProviderPage from "../pages/provider/page";
 import LoginPage from "@/pages/auth/login/page";
 import SignupPage from "@/pages/auth/signup/page";
 import OTPPage from "@/pages/auth/otp/page";
+import HomePage from "@/pages/Home/page";
 
 export default function AppRoutes() {
   return (
     <BrowserRouter>
       <Routes>
         {/* Redirect "/" -> "/admin" for convenience */}
-        <Route path="/" element={<Navigate to="/admin" replace />} />
+        <Route path="/" element={<HomePage/>} />
         <Route path="/login" element={<LoginPage />} />
         <Route path="/signup" element={<SignupPage />} />
         <Route path="/otp" element={<OTPPage />} />
