@@ -1,27 +1,23 @@
-import ProviderLayout from "@/layouts/ProviderLayout";
+// src/pages/admin/page.tsx
+import { ChartAreaInteractive } from "./_components/chart-area-interactive";
+import { DataTable } from "./_components/data-table";
+import { SectionCards } from "./_components/section-cards";
+import data from "./data.json";
 
-export default function ProviderPage() {
+const ProviderDashboard = () => {
   return (
-    <ProviderLayout>
-      {/* Dashboard Page Content */}
-      <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6">
-        <div className="bg-white p-6 rounded-2xl shadow">
-          <h3 className="text-sm text-gray-500">Total Revenue</h3>
-          <p className="text-2xl font-bold text-gray-800">$45,200</p>
-        </div>
-        <div className="bg-white p-6 rounded-2xl shadow">
-          <h3 className="text-sm text-gray-500">Occupancy Rate</h3>
-          <p className="text-2xl font-bold text-gray-800">78%</p>
-        </div>
-        <div className="bg-white p-6 rounded-2xl shadow">
-          <h3 className="text-sm text-gray-500">Active Bookings</h3>
-          <p className="text-2xl font-bold text-gray-800">124</p>
-        </div>
-        <div className="bg-white p-6 rounded-2xl shadow">
-          <h3 className="text-sm text-gray-500">Pending Payouts</h3>
-          <p className="text-2xl font-bold text-gray-800">$6,300</p>
+    <div className="flex flex-1 flex-col">
+      <div className="@container/main flex flex-1 flex-col gap-2">
+        <div className="flex flex-col gap-4 py-4 md:gap-6 md:py-6">
+          <SectionCards />
+          <div className="px-4 lg:px-6">
+            <ChartAreaInteractive />
+          </div>
+          <DataTable data={data} />
         </div>
       </div>
-    </ProviderLayout>
+    </div>
   );
-}
+};
+
+export default ProviderDashboard;

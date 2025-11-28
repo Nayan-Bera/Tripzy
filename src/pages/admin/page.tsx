@@ -4,7 +4,7 @@ import { DataTable } from "./_components/data-table";
 import { SectionCards } from "./_components/section-cards";
 import data from "./data.json";
 
-const Dashboard = () => {
+const AdminDashboard = () => {
   return (
     <div className="flex flex-1 flex-col">
       <div className="@container/main flex flex-1 flex-col gap-2">
@@ -20,4 +20,4 @@ const Dashboard = () => {
   );
 };
 
-export default Dashboard;
+export default AdminDashboard;

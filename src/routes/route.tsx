@@ -11,12 +11,13 @@ import AdminLayout from "../pages/admin/layout";
 import Dashboard from "../pages/admin/page";
 
 // Provider (adjust paths if different)
-import ProviderLayout from "../layouts/ProviderLayout";
-import ProviderPage from "../pages/provider/page";
 import LoginPage from "@/pages/auth/login/page";
 import SignupPage from "@/pages/auth/signup/page";
 import OTPPage from "@/pages/auth/otp/page";
 import HomePage from "@/pages/Home/page";
+import ProviderLayout from "@/pages/provider/Providerlayout";
+import ProviderDashboard from "@/pages/provider/page";
+
 
 export default function AppRoutes() {
   return (
@@ -44,7 +45,7 @@ export default function AppRoutes() {
             path="/provider"
             element={
               <ProviderLayout>
-                <ProviderPage />
+                <ProviderDashboard />
               </ProviderLayout>
             }
           />
