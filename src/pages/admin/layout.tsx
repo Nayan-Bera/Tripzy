@@ -1,6 +1,6 @@
 import React from "react";
 import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar";
-import { AppSidebar } from "./_components/app-sidebar";
+import { AppSidebar } from "../provider/_components/app-sidebar";
 import { SiteHeader } from "./_components/site-header";
 
 interface AdminLayoutProps {
