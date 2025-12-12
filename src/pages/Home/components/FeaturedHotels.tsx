@@ -110,9 +110,7 @@ export const FeaturedHotelsSection: React.FC = () => {
 
               <div className="flex items-center justify-between pt-1">
                 <div>
-                  <span className="text-sm font-semibold">
-                    ${hotel.price}
-                  </span>
+                  <span className="text-sm font-semibold">${hotel.price}</span>
                   <span className="text-xs text-muted-foreground">
                     {" "}
                     / night
@@ -129,4 +127,3 @@ export const FeaturedHotelsSection: React.FC = () => {
     </section>
   );
 };
-
