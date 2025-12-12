@@ -27,7 +27,6 @@ const hotelCategories = [
   },
 ];
 
-
 export const CategoriesSection: React.FC = () => {
   return (
     <section className="mx-auto max-w-6xl space-y-6 px-4 py-10">
@@ -41,9 +40,7 @@ export const CategoriesSection: React.FC = () => {
             <CardContent className="flex flex-col gap-2 p-4">
               <span className="text-2xl">{cat.icon}</span>
               <h3 className="text-sm font-semibold">{cat.label}</h3>
-              <p className="text-xs text-muted-foreground">
-                {cat.description}
-              </p>
+              <p className="text-xs text-muted-foreground">{cat.description}</p>
             </CardContent>
           </Card>
         ))}

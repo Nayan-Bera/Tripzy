@@ -19,7 +19,6 @@ const deals = [
   },
 ];
 
-
 // Deals / Offers
 export const DealsSection: React.FC = () => {
   return (
