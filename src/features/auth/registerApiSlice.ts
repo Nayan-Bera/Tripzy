@@ -1,3 +1,4 @@
+// src/features/auth/registerApiSlice.ts
 import { apiSlice } from "@/app/api/apiSlice";
 
 export const registerApiSlice = apiSlice.injectEndpoints({
@@ -6,7 +7,7 @@ export const registerApiSlice = apiSlice.injectEndpoints({
       query: (credentials) => ({
         url: "/api/v1/auth/register",
         method: "POST",
-        body: { ...credentials },
+        body: credentials,
       }),
     }),
   }),

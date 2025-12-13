@@ -1,3 +1,5 @@
+import { useEffect, useState } from "react"
+import { useNavigate, useSearchParams } from "react-router-dom"
 import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
@@ -5,7 +7,6 @@ import {
   Field,
   FieldDescription,
   FieldGroup,
-  FieldLabel,
 } from "@/components/ui/field"
 import {
   InputOTP,
@@ -13,8 +14,44 @@ import {
   InputOTPSeparator,
   InputOTPSlot,
 } from "@/components/ui/input-otp"
+import { useVerifyOtpMutation } from "@/features/otp/otpApiSlice"
 
 export function OTPForm({ className, ...props }: React.ComponentProps<"div">) {
+  const navigate = useNavigate()
+  const [params] = useSearchParams()
+
+  const [otp, setOtp] = useState("")
+  const [verifyOtp, { isLoading }] = useVerifyOtpMutation()
+
+  const email =
+    params.get("email") || localStorage.getItem("pending_email")
+
+  /* 🔒 Route guard */
+  useEffect(() => {
+    if (!email) {
+      navigate("/signup")
+    }
+  }, [email, navigate])
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault()
+
+    if (otp.length !== 6) {
+      alert("Enter a valid 6-digit OTP")
+      return
+    }
+
+    try {
+      await verifyOtp({ email, otp }).unwrap()
+
+      // ✅ OTP verified
+      localStorage.removeItem("pending_email")
+      navigate("/login")
+    } catch (err: any) {
+      alert(err?.data?.message || "Invalid OTP")
+    }
+  }
+
   return (
     <div
       className={cn("flex flex-col gap-6 md:min-h-[450px]", className)}
@@ -22,61 +59,53 @@ export function OTPForm({ className, ...props }: React.ComponentProps<"div">) {
     >
       <Card className="flex-1 overflow-hidden p-0">
         <CardContent className="grid flex-1 p-0 md:grid-cols-2">
-          <form className="flex flex-col items-center justify-center p-6 md:p-8">
+          <form
+            className="flex flex-col items-center justify-center p-6 md:p-8"
+            onSubmit={handleSubmit}
+          >
             <FieldGroup>
               <Field className="items-center text-center">
                 <h1 className="text-2xl font-bold">Enter verification code</h1>
-                <p className="text-muted-foreground text-sm text-balance">
-                  We sent a 6-digit code to your email
+                <p className="text-muted-foreground text-sm">
+                  We sent a 6-digit code to <b>{email}</b>
                 </p>
               </Field>
-              <Field>
-                <FieldLabel htmlFor="otp" className="sr-only">
-                  Verification code
-                </FieldLabel>
-                <InputOTP
-                  maxLength={6}
-                  id="otp"
-                  required
-                  containerClassName="gap-4"
-                >
-                  <InputOTPGroup>
-                    <InputOTPSlot index={0} />
-                    <InputOTPSlot index={1} />
-                    <InputOTPSlot index={2} />
-                  </InputOTPGroup>
-                  <InputOTPSeparator />
-                  <InputOTPGroup>
-                    <InputOTPSlot index={3} />
-                    <InputOTPSlot index={4} />
-                    <InputOTPSlot index={5} />
-                  </InputOTPGroup>
-                </InputOTP>
-                <FieldDescription className="text-center">
-                  Enter the 6-digit code sent to your email.
-                </FieldDescription>
-              </Field>
-              <Field>
-                <Button type="submit">Verify</Button>
-                <FieldDescription className="text-center">
-                  Didn&apos;t receive the code? <a href="#">Resend</a>
-                </FieldDescription>
-              </Field>
+
+              <InputOTP
+                maxLength={6}
+                value={otp}
+                onChange={setOtp}
+                containerClassName="gap-4"
+              >
+                <InputOTPGroup>
+                  <InputOTPSlot index={0} />
+                  <InputOTPSlot index={1} />
+                  <InputOTPSlot index={2} />
+                </InputOTPGroup>
+                <InputOTPSeparator />
+                <InputOTPGroup>
+                  <InputOTPSlot index={3} />
+                  <InputOTPSlot index={4} />
+                  <InputOTPSlot index={5} />
+                </InputOTPGroup>
+              </InputOTP>
+
+              <Button type="submit" disabled={isLoading}>
+                {isLoading ? "Verifying..." : "Verify"}
+              </Button>
+
+              <FieldDescription className="text-center">
+                Didn&apos;t receive the code?{" "}
+                <span className="cursor-pointer underline">
+                  Resend
+                </span>
+              </FieldDescription>
             </FieldGroup>
           </form>
-          <div className="bg-muted relative hidden md:block">
-            <img
-              src="/placeholder.svg"
-              alt="Image"
-              className="absolute inset-0 h-full w-full object-cover dark:brightness-[0.2] dark:grayscale"
-            />
-          </div>
+
+          <div className="bg-muted hidden md:block" />
         </CardContent>
       </Card>
-      <FieldDescription className="text-center">
-        By clicking continue, you agree to our <a href="#">Terms of Service</a>{" "}
-        and <a href="#">Privacy Policy</a>.
-      </FieldDescription>
     </div>
   )
 }
