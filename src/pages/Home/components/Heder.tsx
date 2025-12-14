@@ -1,6 +1,7 @@
 // Header (shadcn + tailwind, inspired by Aceternity minimal nav)
 
 import { Button } from "@/components/ui/button";
+import { Link } from "react-router-dom";
 
 const navLinks = [
   { label: "Hotels", href: "#hotels" },
@@ -38,7 +39,9 @@ export const Header: React.FC = () => {
           <Button variant="outline" size="sm">
             Become a Host
           </Button>
-          <Button size="sm">Sign In</Button>
+          <Link to="/login">
+            <Button size="sm">Sign In</Button>
+          </Link>
         </div>
       </div>
     </header>

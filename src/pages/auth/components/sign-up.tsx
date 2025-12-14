@@ -144,6 +144,12 @@ export function SignupForm({
                   </button>
                 </div>
               </Field>
+              {/* Register Button */}
+              <Field>
+                <Button type="submit" className="w-full" disabled={isLoading}>
+                  {isLoading ? "Creating..." : "Create Account"}
+                </Button>
+              </Field>
 
               <FieldDescription className="text-center">
                 Already have an account?{" "}
