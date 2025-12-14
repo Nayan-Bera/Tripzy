@@ -1,56 +1,77 @@
-import { useEffect, useState } from "react"
-import { useNavigate, useSearchParams } from "react-router-dom"
-import { cn } from "@/lib/utils"
-import { Button } from "@/components/ui/button"
-import { Card, CardContent } from "@/components/ui/card"
-import {
-  Field,
-  FieldDescription,
-  FieldGroup,
-} from "@/components/ui/field"
+import { useEffect, useState } from "react";
+import { useNavigate, useSearchParams } from "react-router-dom";
+import { cn } from "@/lib/utils";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent } from "@/components/ui/card";
+import { Field, FieldDescription, FieldGroup } from "@/components/ui/field";
 import {
   InputOTP,
   InputOTPGroup,
   InputOTPSeparator,
   InputOTPSlot,
-} from "@/components/ui/input-otp"
-import { useVerifyOtpMutation } from "@/features/otp/otpApiSlice"
+} from "@/components/ui/input-otp";
+import {
+  useResendOtpMutation,
+  useVerifyOtpMutation,
+} from "@/features/otp/otpApiSlice";
 
 export function OTPForm({ className, ...props }: React.ComponentProps<"div">) {
-  const navigate = useNavigate()
-  const [params] = useSearchParams()
+  const navigate = useNavigate();
+  const [params] = useSearchParams();
 
-  const [otp, setOtp] = useState("")
-  const [verifyOtp, { isLoading }] = useVerifyOtpMutation()
-
-  const email =
-    params.get("email") || localStorage.getItem("pending_email")
+  const [otp, setOtp] = useState("");
+  const [verifyOtp, { isLoading }] = useVerifyOtpMutation();
+  const [resendOtp, { isLoading: isResending }] = useResendOtpMutation();
+  const [cooldown, setCooldown] = useState(0);
+  const email = params.get("email") || localStorage.getItem("pending_email");
 
   /* 🔒 Route guard */
   useEffect(() => {
     if (!email) {
-      navigate("/signup")
+      navigate("/signup");
     }
-  }, [email, navigate])
+  }, [email, navigate]);
+  const handleResend = async () => {
+    if (cooldown > 0) return;
+
+    try {
+      await resendOtp({ email }).unwrap();
+      alert("OTP sent again to your email");
+
+      // 30s cooldown
+      setCooldown(30);
+      const timer = setInterval(() => {
+        setCooldown((prev) => {
+          if (prev <= 1) {
+            clearInterval(timer);
+            return 0;
+          }
+          return prev - 1;
+        });
+      }, 1000);
+    } catch (err: any) {
+      alert(err?.data?.message || "Failed to resend OTP");
+    }
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault()
+    e.preventDefault();
 
     if (otp.length !== 6) {
-      alert("Enter a valid 6-digit OTP")
-      return
+      alert("Enter a valid 6-digit OTP");
+      return;
     }
 
     try {
-      await verifyOtp({ email, otp }).unwrap()
+      await verifyOtp({ email, otp }).unwrap();
 
       // ✅ OTP verified
-      localStorage.removeItem("pending_email")
-      navigate("/login")
+      localStorage.removeItem("pending_email");
+      navigate("/login");
     } catch (err: any) {
-      alert(err?.data?.message || "Invalid OTP")
+      alert(err?.data?.message || "Invalid OTP");
     }
-  }
+  };
 
   return (
     <div
@@ -96,8 +117,19 @@ export function OTPForm({ className, ...props }: React.ComponentProps<"div">) {
 
               <FieldDescription className="text-center">
                 Didn&apos;t receive the code?{" "}
-                <span className="cursor-pointer underline">
-                  Resend
+                <span
+                  onClick={handleResend}
+                  className={cn(
+                    "cursor-pointer underline",
+                    (isResending || cooldown > 0) &&
+                      "opacity-50 pointer-events-none"
+                  )}
+                >
+                  {cooldown > 0
+                    ? `Resend in ${cooldown}s`
+                    : isResending
+                    ? "Sending..."
+                    : "Resend"}
                 </span>
               </FieldDescription>
             </FieldGroup>
@@ -107,5 +139,5 @@ export function OTPForm({ className, ...props }: React.ComponentProps<"div">) {
         </CardContent>
       </Card>
     </div>
-  )
+  );
 }
