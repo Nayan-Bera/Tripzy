@@ -5,14 +5,14 @@ export const otpApiSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
     verifyOtp: builder.mutation({
       query: (data) => ({
-        url: "v1/otp/verify-otp",
+        url: "otp/verify-otp",
         method: "POST",
         body: data,
       }),
     }),
          resendOtp: builder.mutation({
       query: (data) => ({
-        url: "v1/otp/resend-otp",
+        url: "otp/resend-otp",
         method: "POST",
         body: data,
       }),

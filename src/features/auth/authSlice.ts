@@ -1,124 +1,89 @@
 import { RootState } from "@/app/store";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
- 
+
 const storedAuth = localStorage.getItem("auth");
 const isExist = storedAuth ? JSON.parse(storedAuth) : null;
 
-type TInitialState = {
-  email_verified: boolean | null;
-  phone_verified: boolean | null;
-  role: string | null;
-  access_token: string | null;
-  refresh_token: string | null;
-  avatar: string | null;
-  onboarding: number;
+export type TInitialState = {
+	email_verified: boolean | null;
+	phone_verified: boolean | null;
+	role: string | null;
+	access_token: string | null;
+	refresh_token: string | null;
+	avatar: string | null;
+	onboarding: number;
 };
 
 const initialState: TInitialState = {
-  email_verified: isExist ? isExist.email_verified : null,
-  phone_verified: isExist ? isExist.phone_verified : null,
-  role: isExist ? isExist.role : null,
-  access_token: isExist ? isExist.access_token : null,
-  refresh_token: isExist ? isExist.refresh_token : null,
-  avatar: isExist ? isExist.avatar : null,
-  onboarding: isExist ? isExist.onboarding : 0,
+	email_verified: isExist?.email_verified ?? null,
+	phone_verified: isExist?.phone_verified ?? null,
+	role: isExist?.role ?? null,
+	access_token: isExist?.access_token ?? null,
+	refresh_token: isExist?.refresh_token ?? null,
+	avatar: isExist?.avatar ?? null,
+	onboarding: isExist?.onboarding ?? 0,
+};
+
+const saveAuthToStorage = (state: TInitialState) => {
+	localStorage.setItem("auth", JSON.stringify(state));
 };
 
 const authSlice = createSlice({
-  name: "auth",
-  initialState,
-  reducers: {
-    setCredentials: (
-      state: TInitialState,
-      action: PayloadAction<TInitialState>
-    ) => {
-      const {
-        email_verified,
-        phone_verified,
-        role,
-        access_token,
-        refresh_token,
-        avatar,
-        onboarding,
-      } = action.payload;
-      state.email_verified = email_verified;
-      state.phone_verified = phone_verified;
-      state.role = role;
-      state.access_token = access_token;
-      state.refresh_token = refresh_token;
-      state.avatar = avatar;
-      state.onboarding = onboarding;
+	name: "auth",
+	initialState,
+	reducers: {
+		// Used on login & refresh
+		setCredentials: (
+			state,
+			action: PayloadAction<Partial<TInitialState>>
+		) => {
+			Object.assign(state, action.payload);
+			saveAuthToStorage(state);
+		},
 
-      localStorage.setItem(
-        "auth",
-        JSON.stringify({
-          email_verified,
-          phone_verified,
-          role,
-          access_token,
-          refresh_token,
-          avatar,
-          onboarding,
-        })
-      );
-    },
-    updateCredentials: (
-      state: TInitialState,
-      action: PayloadAction<Partial<TInitialState>>
-    ) => {
-      const updatedState = {
-        ...state,
-        ...action.payload,
-      };
+		// Used for profile updates
+		updateCredentials: (
+			state,
+			action: PayloadAction<Partial<TInitialState>>
+		) => {
+			Object.assign(state, action.payload);
+			saveAuthToStorage(state);
+		},
 
-      state.email_verified = updatedState.email_verified;
-      state.phone_verified = updatedState.phone_verified;
-      state.role = updatedState.role;
-      state.access_token = updatedState.access_token;
-      state.refresh_token = updatedState.refresh_token;
-      state.avatar = updatedState.avatar;
-      state.onboarding = updatedState.onboarding;
-      localStorage.setItem("auth", JSON.stringify(updatedState));
-    },
+		emailVerified: (state) => {
+			state.email_verified = true;
+			state.phone_verified = true;
+			saveAuthToStorage(state);
+		},
 
-    emailVerified: (state: TInitialState) => {
-      state.email_verified = true;
-      state.phone_verified = true;
-      localStorage.setItem(
-        "auth",
-        JSON.stringify({
-          ...state,
-          email_verified: state.email_verified,
-          phone_verified: state.phone_verified,
-        })
-      );
-    },
-    updateOnboarding: (state: TInitialState) => {
-      state.onboarding = state.onboarding + 1;
-      localStorage.setItem("auth",JSON.stringify({...state,onboarding:state.onboarding}));
-    },
-    logout: (state: TInitialState) => {
-      state.email_verified = null;
-      state.phone_verified = null;
-      state.role = null;
-      state.access_token = null;
-      state.refresh_token = null;
-      state.avatar = null;
-      state.onboarding = 0;
-      localStorage.removeItem("auth");
-    },
-  },
+		updateOnboarding: (state) => {
+			state.onboarding += 1;
+			saveAuthToStorage(state);
+		},
+
+		logout: (state) => {
+			Object.assign(state, {
+				email_verified: null,
+				phone_verified: null,
+				role: null,
+				access_token: null,
+				refresh_token: null,
+				avatar: null,
+				onboarding: 0,
+			});
+			localStorage.removeItem("auth");
+		},
+	},
 });
 
 export const {
-  setCredentials,
-  updateCredentials,
-  logout,
-  emailVerified,
-  updateOnboarding,
+	setCredentials,
+	updateCredentials,
+	logout,
+	emailVerified,
+	updateOnboarding,
 } = authSlice.actions;
 
 export default authSlice.reducer;
 
 export const selectCurrentAuthData = (state: RootState) => state.auth;
-//
