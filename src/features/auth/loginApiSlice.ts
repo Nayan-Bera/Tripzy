@@ -9,6 +9,7 @@ export interface LoginResponse {
 	data: {
 		email_verified: boolean;
 		role: string;
+        name: string;
 		access_token: string;
 		refresh_token: string;
 	};

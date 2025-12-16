@@ -35,6 +35,7 @@ export function LoginForm({
 				setCredentials({
 					email_verified: response.data.email_verified,
 					role: response.data.role,
+          name: response.data.name,
 					access_token: response.data.access_token,
 					refresh_token: response.data.refresh_token,
 				})

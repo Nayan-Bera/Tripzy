@@ -8,7 +8,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Heart, LogOut, User } from "lucide-react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate} from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 
 import { selectCurrentAuthData, logout } from "@/features/auth/authSlice";
@@ -20,30 +20,47 @@ const navLinks = [
 	{ label: "Support", href: "#support" },
 ];
 
-export const Header: React.FC = () => {
+export const Nav: React.FC = () => {
 	const auth = useSelector(selectCurrentAuthData);
 	const dispatch = useDispatch();
 	const navigate = useNavigate();
+	// const location = useLocation();
 
 	const isLoggedIn = !!auth.access_token;
+
+	// Hide "Become a Host" on login & signup
+	// const hideBecomeHost =
+	// 	location.pathname === "/login" || location.pathname === "/signup";
 
 	const handleLogout = () => {
 		dispatch(logout());
 		navigate("/login");
 	};
 
+	// Generate avatar initials from name
+	const getInitials = () => {
+		if (!auth?.name) return "U";
+
+		const words = auth.name.trim().split(" ");
+		if (words.length === 1) return words[0][0].toUpperCase();
+
+		return `${words[0][0]}${words[1][0]}`.toUpperCase();
+	};
+
+	console.log(auth);
+
 	return (
 		<header className="sticky top-0 z-40 border-b bg-background/80 backdrop-blur">
 			<div className="mx-auto flex max-w-6xl items-center justify-between px-4 py-3">
 				{/* Logo */}
-				<div className="flex items-center gap-2">
+				<Link to="/" className="flex items-center gap-2">
 					<span className="inline-flex h-8 w-8 items-center justify-center rounded-xl bg-linear-to-tr from-sky-500 to-teal-400 text-lg font-bold text-white">
 						TY
 					</span>
 					<span className="text-lg font-semibold tracking-tight">
 						TRIPZY
 					</span>
-				</div>
+				</Link>
 
 				{/* Nav */}
 				<nav className="hidden items-center gap-6 text-sm font-medium md:flex">
@@ -60,10 +77,6 @@ export const Header: React.FC = () => {
 
 				{/* Right Actions */}
 				<div className="flex items-center gap-2">
-					<Button variant="outline" size="sm">
-						Become a Host
-					</Button>
-
 					{/* Logged-in UI */}
 					{isLoggedIn ? (
 						<>
@@ -81,7 +94,7 @@ export const Header: React.FC = () => {
 										<Avatar className="h-9 w-9 cursor-pointer">
 											<AvatarImage src={auth.avatar ?? ""} />
 											<AvatarFallback>
-												{auth.role?.charAt(0).toUpperCase() ?? "U"}
+												{getInitials()}
 											</AvatarFallback>
 										</Avatar>
 									</button>
@@ -105,7 +118,7 @@ export const Header: React.FC = () => {
 									<DropdownMenuSeparator />
 
 									<DropdownMenuItem
-										className="text-red-500"
+										className="text-red-500 focus:text-red-500"
 										onClick={handleLogout}
 									>
 										<LogOut className="mr-2 h-4 w-4" />
@@ -116,9 +129,15 @@ export const Header: React.FC = () => {
 						</>
 					) : (
 						/* Guest UI */
+						<>
+						<Button variant="outline" size="sm">
+							Become a Host
+						</Button>
+
 						<Link to="/login">
 							<Button size="sm">Sign In</Button>
 						</Link>
+						</>
 					)}
 				</div>
 			</div>
