@@ -8,7 +8,6 @@ import PrivateRoute from "./private/PrivateRoute";
 
 // Admin
 import AdminLayout from "../pages/admin/layout";
-import Dashboard from "../pages/admin/page";
 
 // Provider (adjust paths if different)
 import LoginPage from "@/pages/auth/login/page";
@@ -17,6 +16,7 @@ import OTPPage from "@/pages/auth/otp/page";
 import HomePage from "@/pages/Home/page";
 import ProviderLayout from "@/pages/provider/Providerlayout";
 import ProviderDashboard from "@/pages/provider/page";
+import AdminDashboard from "@/pages/admin/page";
 
 
 export default function AppRoutes() {
@@ -36,7 +36,7 @@ export default function AppRoutes() {
             path="/admin"
             element={
               <AdminLayout>
-                <Dashboard />
+                <AdminDashboard/>
               </AdminLayout>
             }
           />

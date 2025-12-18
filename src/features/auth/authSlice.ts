@@ -7,6 +7,7 @@ const isExist = storedAuth ? JSON.parse(storedAuth) : null;
 export type TInitialState = {
 	email_verified: boolean | null;
 	phone_verified: boolean | null;
+	email: string | null;
 	name: string | null;
 	role: string | null;
 	access_token: string | null;
@@ -18,6 +19,7 @@ export type TInitialState = {
 const initialState: TInitialState = {
 	email_verified: isExist?.email_verified ?? null,
 	phone_verified: isExist?.phone_verified ?? null,
+	email: isExist?.email ?? null,
 	role: isExist?.role ?? null,
 	name: isExist?.name ?? null,
 	access_token: isExist?.access_token ?? null,

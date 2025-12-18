@@ -30,13 +30,12 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from "@/components/ui/sidebar"
+import { useSelector } from "react-redux"
+import { selectCurrentAuthData } from "@/features/auth/authSlice"
+
 
 const data = {
-  user: {
-    name: "shadcn",
-    email: "m@example.com",
-    avatar: "/avatars/shadcn.jpg",
-  },
+ 
   navMain: [
     {
       title: "Dashboard",
@@ -149,6 +148,19 @@ const data = {
 }
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
+
+   const auth = useSelector(selectCurrentAuthData);
+   console.log(auth);
+  const user = {
+    name: auth?.name || "",
+    email: auth?.email || "",
+    avatar: auth?.avatar || "",
+    role: auth?.role || "",
+  };
+
+  console.log(user);
+  
+
   return (
     <Sidebar collapsible="offcanvas" {...props}>
       <SidebarHeader>
@@ -172,7 +184,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
         <NavSecondary items={data.navSecondary} className="mt-auto" />
       </SidebarContent>
       <SidebarFooter>
-        <NavUser user={data.user} />
+        <NavUser user={user} />
       </SidebarFooter>
     </Sidebar>
   )
