@@ -1,4 +1,4 @@
-import * as React from "react"
+import * as React from "react";
 import {
   ArrowUpCircleIcon,
   BarChartIcon,
@@ -15,12 +15,12 @@ import {
   SearchIcon,
   SettingsIcon,
   UsersIcon,
-} from "lucide-react"
+} from "lucide-react";
 
-import { NavDocuments } from "@/pages/admin/_components/nav-documents"
-import { NavMain } from "@/pages/provider/_components/nav-main"
-import { NavSecondary } from "@/pages/admin/_components/nav-secondary"
-import { NavUser } from "@/pages/admin/_components/nav-user"
+import { NavDocuments } from "@/pages/admin/_components/nav-documents";
+import { NavMain } from "@/pages/provider/_components/nav-main";
+import { NavSecondary } from "@/pages/admin/_components/nav-secondary";
+import { NavUser } from "@/pages/admin/_components/nav-user";
 import {
   Sidebar,
   SidebarContent,
@@ -29,13 +29,11 @@ import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
-} from "@/components/ui/sidebar"
-import { useSelector } from "react-redux"
-import { selectCurrentAuthData } from "@/features/auth/authSlice"
-
+} from "@/components/ui/sidebar";
+import { useSelector } from "react-redux";
+import { selectCurrentAuthData } from "@/features/auth/authSlice";
 
 const data = {
- 
   navMain: [
     {
       title: "Dashboard",
@@ -145,12 +143,11 @@ const data = {
       icon: FileIcon,
     },
   ],
-}
+};
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
-
-   const auth = useSelector(selectCurrentAuthData);
-   console.log(auth);
+  const auth = useSelector(selectCurrentAuthData);
+  console.log(auth);
   const user = {
     name: auth?.name || "",
     email: auth?.email || "",
@@ -159,7 +156,6 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   };
 
   console.log(user);
-  
 
   return (
     <Sidebar collapsible="offcanvas" {...props}>
@@ -187,5 +183,5 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
         <NavUser user={user} />
       </SidebarFooter>
     </Sidebar>
-  )
+  );
 }
