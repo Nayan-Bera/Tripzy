@@ -44,7 +44,7 @@ import {
   LoaderIcon,
   MoreVerticalIcon,
   PlusIcon,
-  TrendingUpIcon
+  TrendingUpIcon,
 } from "lucide-react";
 import * as React from "react";
 import { Area, AreaChart, CartesianGrid, XAxis } from "recharts";
