@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
@@ -33,12 +33,19 @@ export function SignupForm({
     confirmPassword: "",
   });
 
-  const [roleId, setRoleId] = useState("");
-
   // UI state
+  const [roleId, setRoleId] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  useEffect(() => {
+    if (!rolesLoading && roles.length > 0) {
+      const userRole = roles.find((r) => r.name === "user");
 
+      if (userRole) {
+        setRoleId(userRole.id);
+      }
+    }
+  }, [roles, rolesLoading]);
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setForm({ ...form, [e.target.id]: e.target.value });
   };
@@ -107,29 +114,6 @@ export function SignupForm({
                 />
               </Field>
 
-              {/* Role */}
-              <Field className="space-y-1">
-                <FieldLabel htmlFor="role">Role</FieldLabel>
-                <select
-                  id="role"
-                  className="w-full rounded-md border px-3 py-2 text-sm"
-                  value={roleId}
-                  onChange={(e) => setRoleId(e.target.value)}
-                  disabled={rolesLoading}
-                  required
-                >
-                  <option value="">
-                    {rolesLoading ? "Loading roles..." : "Select role"}
-                  </option>
-
-                  {roles.map((role) => (
-                    <option key={role.id} value={role.id}>
-                      {role.name}
-                    </option>
-                  ))}
-                </select>
-              </Field>
-
               {/* Password */}
               <Field className="space-y-1">
                 <FieldLabel htmlFor="password">Password</FieldLabel>
@@ -167,9 +151,7 @@ export function SignupForm({
                   <button
                     type="button"
                     className="absolute right-3 top-1/2 -translate-y-1/2"
-                    onClick={() =>
-                      setShowConfirmPassword(!showConfirmPassword)
-                    }
+                    onClick={() => setShowConfirmPassword(!showConfirmPassword)}
                   >
                     {showConfirmPassword ? (
                       <EyeOff size={18} />

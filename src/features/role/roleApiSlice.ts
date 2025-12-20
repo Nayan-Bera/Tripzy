@@ -7,9 +7,14 @@ export const roleApiSlice = apiSlice.injectEndpoints({
       void
     >({
       query: () => "/role/get-role",
+
+      transformResponse: (response: {
+        status: number;
+        message: string;
+        data: { id: string; name: string }[];
+      }) => response.data,
     }),
   }),
 });
 
 export const { useGetRolesQuery } = roleApiSlice;
-
