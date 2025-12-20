@@ -8,19 +8,24 @@ import {
   FieldDescription,
   FieldGroup,
   FieldLabel,
-  FieldSeparator,
 } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
-import { useRegisterMutation } from "@/features/auth/registerApiSlice";
 import { Eye, EyeOff } from "lucide-react";
+
+import { useRegisterMutation } from "@/features/auth/registerApiSlice";
+import { useGetRolesQuery } from "@/features/role/roleApiSlice";
 
 export function SignupForm({
   className,
   ...props
 }: React.ComponentProps<"div">) {
   const navigate = useNavigate();
-  const [register, { isLoading }] = useRegisterMutation();
 
+  // API
+  const [register, { isLoading }] = useRegisterMutation();
+  const { data: roles = [], isLoading: rolesLoading } = useGetRolesQuery();
+
+  // Form state
   const [form, setForm] = useState({
     name: "",
     email: "",
@@ -28,6 +33,9 @@ export function SignupForm({
     confirmPassword: "",
   });
 
+  const [roleId, setRoleId] = useState("");
+
+  // UI state
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
@@ -37,6 +45,11 @@ export function SignupForm({
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+
+    if (!roleId) {
+      alert("Please select a role");
+      return;
+    }
 
     if (form.password !== form.confirmPassword) {
       alert("Passwords do not match");
@@ -48,13 +61,10 @@ export function SignupForm({
         name: form.name,
         email: form.email,
         password: form.password,
-        role: "user",
+        roleId, // ✅ SEND ROLE ID
       }).unwrap();
 
-      // store email for OTP verification
       localStorage.setItem("pending_email", form.email);
-
-      // redirect to OTP page
       navigate(`/otp?email=${encodeURIComponent(form.email)}`);
     } catch (err: any) {
       alert(err?.data?.message || "Registration failed");
@@ -69,7 +79,7 @@ export function SignupForm({
             <FieldGroup>
               <div className="flex flex-col items-center gap-1 text-center">
                 <h1 className="text-2xl font-bold">Create your account</h1>
-                <p className="text-muted-foreground text-sm text-balance">
+                <p className="text-muted-foreground text-sm">
                   Enter your details to create your account
                 </p>
               </div>
@@ -95,6 +105,29 @@ export function SignupForm({
                   required
                   onChange={handleChange}
                 />
+              </Field>
+
+              {/* Role */}
+              <Field className="space-y-1">
+                <FieldLabel htmlFor="role">Role</FieldLabel>
+                <select
+                  id="role"
+                  className="w-full rounded-md border px-3 py-2 text-sm"
+                  value={roleId}
+                  onChange={(e) => setRoleId(e.target.value)}
+                  disabled={rolesLoading}
+                  required
+                >
+                  <option value="">
+                    {rolesLoading ? "Loading roles..." : "Select role"}
+                  </option>
+
+                  {roles.map((role) => (
+                    <option key={role.id} value={role.id}>
+                      {role.name}
+                    </option>
+                  ))}
+                </select>
               </Field>
 
               {/* Password */}
@@ -134,7 +167,9 @@ export function SignupForm({
                   <button
                     type="button"
                     className="absolute right-3 top-1/2 -translate-y-1/2"
-                    onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                    onClick={() =>
+                      setShowConfirmPassword(!showConfirmPassword)
+                    }
                   >
                     {showConfirmPassword ? (
                       <EyeOff size={18} />
@@ -144,7 +179,8 @@ export function SignupForm({
                   </button>
                 </div>
               </Field>
-              {/* Register Button */}
+
+              {/* Submit */}
               <Field>
                 <Button type="submit" className="w-full" disabled={isLoading}>
                   {isLoading ? "Creating..." : "Create Account"}
@@ -163,16 +199,23 @@ export function SignupForm({
           <div className="bg-muted relative hidden md:block">
             <img
               src="/placeholder.svg"
-              alt="Image"
-              className="absolute inset-0 h-full w-full object-cover dark:brightness-[0.2] dark:grayscale"
+              alt="Signup"
+              className="absolute inset-0 h-full w-full object-cover"
             />
           </div>
         </CardContent>
       </Card>
 
       <FieldDescription className="px-6 text-center">
-        By clicking continue, you agree to our <a href="#">Terms of Service</a>{" "}
-        and <a href="#">Privacy Policy</a>.
+        By clicking continue, you agree to our{" "}
+        <a href="#" className="underline">
+          Terms of Service
+        </a>{" "}
+        and{" "}
+        <a href="#" className="underline">
+          Privacy Policy
+        </a>
+        .
       </FieldDescription>
     </div>
   );
