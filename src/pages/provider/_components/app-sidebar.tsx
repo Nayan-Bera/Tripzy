@@ -32,17 +32,18 @@ import {
 } from "@/components/ui/sidebar";
 import { useSelector } from "react-redux";
 import { selectCurrentAuthData } from "@/features/auth/authSlice";
+import { Link } from "react-router-dom";
 
 const data = {
   navMain: [
     {
       title: "Dashboard",
-      url: "#",
+      url: "/",
       icon: LayoutDashboardIcon,
     },
     {
-      title: "Lifecycle",
-      url: "#",
+      title: "Roles",
+      url: "provider/role",
       icon: ListIcon,
     },
     {
@@ -166,10 +167,10 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
               asChild
               className="data- [ slot=sidebar-menu-button]:!p-1.5"
             >
-              <a href="#">
+              <Link to="/">
                 <ArrowUpCircleIcon className="h-5 w-5" />
                 <span className="text-base font-semibold">Acme Inc.</span>
-              </a>
+              </Link>
             </SidebarMenuButton>
           </SidebarMenuItem>
         </SidebarMenu>
