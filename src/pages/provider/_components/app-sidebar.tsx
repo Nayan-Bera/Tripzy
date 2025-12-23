@@ -38,12 +38,12 @@ const data = {
   navMain: [
     {
       title: "Dashboard",
-      url: "/",
+      url: "/provider",
       icon: LayoutDashboardIcon,
     },
     {
       title: "Roles",
-      url: "provider/role",
+      url: "/provider/role",
       icon: ListIcon,
     },
     {
