@@ -17,6 +17,7 @@ import HomePage from "@/pages/Home/page";
 import ProviderLayout from "@/pages/provider/Providerlayout";
 import ProviderDashboard from "@/pages/provider/page";
 import AdminDashboard from "@/pages/admin/page";
+import { Roles } from "@/pages/provider/Role/page";
 
 
 export default function AppRoutes() {
@@ -46,6 +47,14 @@ export default function AppRoutes() {
             element={
               <ProviderLayout>
                 <ProviderDashboard />
+              </ProviderLayout>
+            }
+          />
+          <Route
+            path="/provider/role"
+            element={
+              <ProviderLayout>
+                <Roles />
               </ProviderLayout>
             }
           />
