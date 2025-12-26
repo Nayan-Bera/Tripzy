@@ -1,6 +1,3 @@
-import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import {
@@ -10,10 +7,12 @@ import {
   FieldLabel,
 } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
+import { cn } from "@/lib/utils";
 import { Eye, EyeOff } from "lucide-react";
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 import { useRegisterMutation } from "@/features/auth/registerApiSlice";
-import { useGetRolesQuery } from "@/features/role/roleApiSlice";
 
 export function SignupForm({
   className,
@@ -23,7 +22,6 @@ export function SignupForm({
 
   // API
   const [register, { isLoading }] = useRegisterMutation();
-  const { data: roles = [], isLoading: rolesLoading } = useGetRolesQuery();
 
   // Form state
   const [form, setForm] = useState({
@@ -34,29 +32,16 @@ export function SignupForm({
   });
 
   // UI state
-  const [roleId, setRoleId] = useState("");
+
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
-  useEffect(() => {
-    if (!rolesLoading && roles.length > 0) {
-      const userRole = roles.find((r) => r.name === "user");
 
-      if (userRole) {
-        setRoleId(userRole.id);
-      }
-    }
-  }, [roles, rolesLoading]);
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setForm({ ...form, [e.target.id]: e.target.value });
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-
-    if (!roleId) {
-      alert("Please select a role");
-      return;
-    }
 
     if (form.password !== form.confirmPassword) {
       alert("Passwords do not match");
@@ -68,7 +53,6 @@ export function SignupForm({
         name: form.name,
         email: form.email,
         password: form.password,
-        roleId, // ✅ SEND ROLE ID
       }).unwrap();
 
       localStorage.setItem("pending_email", form.email);
