@@ -47,7 +47,7 @@ const data = {
       icon: ListIcon,
     },
     {
-      title: "Analytics",
+      title: "hotels",
       url: "#",
       icon: BarChartIcon,
     },
