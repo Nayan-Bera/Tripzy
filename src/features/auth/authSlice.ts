@@ -1,93 +1,101 @@
 import { RootState } from "@/app/store";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
+/* ================= TYPES ================= */
+
+export type HotelAccess = {
+  hotelId: string;
+  hotelName: string;
+  role: string;
+};
+
+export type AuthUser = {
+  id: string;
+  name: string;
+  email: string;
+  platformRole: "USER" | "ADMIN" | "SUPER_ADMIN";
+  email_verified: boolean;
+};
+
+export type AuthState = {
+  user: AuthUser | null;
+  hotelAccess: HotelAccess[];
+  access_token: string | null;
+  refresh_token: string | null;
+};
+
+/* ================= INITIAL STATE ================= */
+
+// Load persisted auth safely
 const storedAuth = localStorage.getItem("auth");
-const isExist = storedAuth ? JSON.parse(storedAuth) : null;
+const parsedAuth: AuthState | null = storedAuth
+  ? JSON.parse(storedAuth)
+  : null;
 
-export type TInitialState = {
-	email_verified: boolean | null;
-	phone_verified: boolean | null;
-	email: string | null;
-	name: string | null;
-	role: string | null;
-	access_token: string | null;
-	refresh_token: string | null;
-	avatar: string | null;
-	onboarding: number;
+const initialState: AuthState = {
+  user: parsedAuth?.user ?? null,
+  hotelAccess: parsedAuth?.hotelAccess ?? [],
+  access_token: parsedAuth?.access_token ?? null,
+  refresh_token: parsedAuth?.refresh_token ?? null,
 };
 
-const initialState: TInitialState = {
-	email_verified: isExist?.email_verified ?? null,
-	phone_verified: isExist?.phone_verified ?? null,
-	email: isExist?.email ?? null,
-	role: isExist?.role ?? null,
-	name: isExist?.name ?? null,
-	access_token: isExist?.access_token ?? null,
-	refresh_token: isExist?.refresh_token ?? null,
-	avatar: isExist?.avatar ?? null,
-	onboarding: isExist?.onboarding ?? 0,
+/* ================= HELPERS ================= */
+
+const saveAuthToStorage = (state: AuthState) => {
+  localStorage.setItem("auth", JSON.stringify(state));
 };
 
-const saveAuthToStorage = (state: TInitialState) => {
-	localStorage.setItem("auth", JSON.stringify(state));
-};
+/* ================= SLICE ================= */
 
 const authSlice = createSlice({
-	name: "auth",
-	initialState,
-	reducers: {
-		// Used on login & refresh
-		setCredentials: (
-			state,
-			action: PayloadAction<Partial<TInitialState>>
-		) => {
-			Object.assign(state, action.payload);
-			saveAuthToStorage(state);
-		},
+  name: "auth",
+  initialState,
+  reducers: {
+    // Login (full state)
+    setCredentials: (
+      state,
+      action: PayloadAction<{
+        user: AuthUser;
+        hotelAccess: HotelAccess[];
+        access_token: string;
+        refresh_token: string;
+      }>
+    ) => {
+      state.user = action.payload.user;
+      state.hotelAccess = action.payload.hotelAccess;
+      state.access_token = action.payload.access_token;
+      state.refresh_token = action.payload.refresh_token;
+      saveAuthToStorage(state);
+    },
 
-		// Used for profile updates
-		updateCredentials: (
-			state,
-			action: PayloadAction<Partial<TInitialState>>
-		) => {
-			Object.assign(state, action.payload);
-			saveAuthToStorage(state);
-		},
+    // Refresh token ONLY
+    updateTokens: (
+      state,
+      action: PayloadAction<{
+        access_token: string;
+        refresh_token: string;
+      }>
+    ) => {
+      state.access_token = action.payload.access_token;
+      state.refresh_token = action.payload.refresh_token;
+      saveAuthToStorage(state);
+    },
 
-		emailVerified: (state) => {
-			state.email_verified = true;
-			state.phone_verified = true;
-			saveAuthToStorage(state);
-		},
-
-		updateOnboarding: (state) => {
-			state.onboarding += 1;
-			saveAuthToStorage(state);
-		},
-
-		logout: (state) => {
-			Object.assign(state, {
-				email_verified: null,
-				phone_verified: null,
-				role: null,
-				access_token: null,
-				refresh_token: null,
-				avatar: null,
-				onboarding: 0,
-			});
-			localStorage.removeItem("auth");
-		},
-	},
+    logout: (state) => {
+      state.user = null;
+      state.hotelAccess = [];
+      state.access_token = null;
+      state.refresh_token = null;
+      localStorage.removeItem("auth");
+    },
+  },
 });
 
-export const {
-	setCredentials,
-	updateCredentials,
-	logout,
-	emailVerified,
-	updateOnboarding,
-} = authSlice.actions;
+/* ================= EXPORTS ================= */
+
+export const { setCredentials, updateTokens, logout } =
+  authSlice.actions;
 
 export default authSlice.reducer;
 
-export const selectCurrentAuthData = (state: RootState) => state.auth;
+export const selectCurrentAuth = (state: RootState) => state.auth;

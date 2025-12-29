@@ -25,28 +25,28 @@ export function LoginForm({
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
 
-  const handleSubmit = async (e: FormEvent) => {
-    e.preventDefault();
+const handleSubmit = async (e: FormEvent) => {
+  e.preventDefault();
 
-    try {
-      const response = await login({ email, password }).unwrap();
+  try {
+    const response = await login({ email, password }).unwrap();
 
-      dispatch(
-        setCredentials({
-          email_verified: response.data.email_verified,
-          role: response.data.role,
-          name: response.data.name,
-          email: response.data.email,
-          access_token: response.data.access_token,
-          refresh_token: response.data.refresh_token,
-        })
-      );
+    dispatch(
+      setCredentials({
+        user: response.data.user,
+        hotelAccess: response.data.hotelAccess,
+        access_token: response.data.access_token,
+        refresh_token: response.data.refresh_token,
+      })
+    );
 
-      navigate("/");
-    } catch (err) {
-      console.error("Login failed", err);
-    }
-  };
+    // ✅ ALWAYS go to main page
+    navigate("/");
+  } catch (err) {
+    console.error("Login failed", err);
+  }
+};
+
 
   return (
     <div className={cn("flex flex-col gap-6", className)} {...props}>

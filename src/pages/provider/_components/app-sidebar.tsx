@@ -1,26 +1,19 @@
-import * as React from "react";
 import {
   ArrowUpCircleIcon,
   BarChartIcon,
-  CameraIcon,
   ClipboardListIcon,
   DatabaseIcon,
-  FileCodeIcon,
   FileIcon,
-  FileTextIcon,
   FolderIcon,
   HelpCircleIcon,
   LayoutDashboardIcon,
   ListIcon,
   SearchIcon,
   SettingsIcon,
-  UsersIcon,
+  UsersIcon
 } from "lucide-react";
+import * as React from "react";
 
-import { NavDocuments } from "@/pages/admin/_components/nav-documents";
-import { NavMain } from "@/pages/provider/_components/nav-main";
-import { NavSecondary } from "@/pages/admin/_components/nav-secondary";
-import { NavUser } from "@/pages/admin/_components/nav-user";
 import {
   Sidebar,
   SidebarContent,
@@ -30,8 +23,12 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from "@/components/ui/sidebar";
+import { selectCurrentAuth } from "@/features/auth/authSlice";
+import { NavDocuments } from "@/pages/admin/_components/nav-documents";
+import { NavSecondary } from "@/pages/admin/_components/nav-secondary";
+import { NavUser } from "@/pages/admin/_components/nav-user";
+import { NavMain } from "@/pages/provider/_components/nav-main";
 import { useSelector } from "react-redux";
-import { selectCurrentAuthData } from "@/features/auth/authSlice";
 import { Link } from "react-router-dom";
 
 const data = {
@@ -47,8 +44,8 @@ const data = {
       icon: ListIcon,
     },
     {
-      title: "hotels",
-      url: "#",
+      title: "Hotels",
+      url: "/provider/hotels",
       icon: BarChartIcon,
     },
     {
@@ -60,54 +57,6 @@ const data = {
       title: "Team",
       url: "#",
       icon: UsersIcon,
-    },
-  ],
-  navClouds: [
-    {
-      title: "Capture",
-      icon: CameraIcon,
-      isActive: true,
-      url: "#",
-      items: [
-        {
-          title: "Active Proposals",
-          url: "#",
-        },
-        {
-          title: "Archived",
-          url: "#",
-        },
-      ],
-    },
-    {
-      title: "Proposal",
-      icon: FileTextIcon,
-      url: "#",
-      items: [
-        {
-          title: "Active Proposals",
-          url: "#",
-        },
-        {
-          title: "Archived",
-          url: "#",
-        },
-      ],
-    },
-    {
-      title: "Prompts",
-      icon: FileCodeIcon,
-      url: "#",
-      items: [
-        {
-          title: "Active Proposals",
-          url: "#",
-        },
-        {
-          title: "Archived",
-          url: "#",
-        },
-      ],
     },
   ],
   navSecondary: [
@@ -146,42 +95,49 @@ const data = {
   ],
 };
 
-export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
-  const auth = useSelector(selectCurrentAuthData);
-  console.log(auth);
-  const user = {
-    name: auth?.name || "",
-    email: auth?.email || "",
-    avatar: auth?.avatar || "",
-    role: auth?.role || "",
-  };
+export function AppSidebar(props: React.ComponentProps<typeof Sidebar>) {
+  const auth = useSelector(selectCurrentAuth);
 
-  console.log(user);
+  const user = auth.user
+    ? {
+        name: auth.user.name,
+        email: auth.user.email,
+        avatar: "", // you can wire this later
+        role:
+          auth.user.platformRole === "ADMIN" ||
+          auth.user.platformRole === "SUPER_ADMIN"
+            ? auth.user.platformRole
+            : auth.hotelAccess.length > 0
+            ? auth.hotelAccess[0].role
+            : "USER",
+      }
+    : null;
 
   return (
     <Sidebar collapsible="offcanvas" {...props}>
       <SidebarHeader>
         <SidebarMenu>
           <SidebarMenuItem>
-            <SidebarMenuButton
-              asChild
-              className="data- [ slot=sidebar-menu-button]:!p-1.5"
-            >
+            <SidebarMenuButton asChild>
               <Link to="/">
                 <ArrowUpCircleIcon className="h-5 w-5" />
-                <span className="text-base font-semibold">Acme Inc.</span>
+                <span className="text-base font-semibold">
+                  Acme Inc.
+                </span>
               </Link>
             </SidebarMenuButton>
           </SidebarMenuItem>
         </SidebarMenu>
       </SidebarHeader>
+
       <SidebarContent>
         <NavMain items={data.navMain} />
         <NavDocuments items={data.documents} />
         <NavSecondary items={data.navSecondary} className="mt-auto" />
       </SidebarContent>
+
       <SidebarFooter>
-        <NavUser user={user} />
+        {user && <NavUser user={user} />}
       </SidebarFooter>
     </Sidebar>
   );

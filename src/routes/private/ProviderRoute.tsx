@@ -2,11 +2,13 @@ import { Navigate, Outlet } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { selectCurrentAuth } from "@/features/auth/authSlice";
 
-export default function PrivateRoute() {
+export default function ProviderRoute() {
   const auth = useSelector(selectCurrentAuth);
 
-  if (!auth.access_token) {
-    return <Navigate to="/login" replace />;
+  const hasHotelAccess = auth.hotelAccess.length > 0;
+
+  if (!hasHotelAccess) {
+    return <Navigate to="/" replace />;
   }
 
   return <Outlet />;

@@ -2,11 +2,15 @@ import { Navigate, Outlet } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { selectCurrentAuth } from "@/features/auth/authSlice";
 
-export default function PrivateRoute() {
+export default function AdminRoute() {
   const auth = useSelector(selectCurrentAuth);
 
-  if (!auth.access_token) {
-    return <Navigate to="/login" replace />;
+  const isAdmin =
+    auth.user?.platformRole === "ADMIN" ||
+    auth.user?.platformRole === "SUPER_ADMIN";
+
+  if (!isAdmin) {
+    return <Navigate to="/" replace />;
   }
 
   return <Outlet />;
