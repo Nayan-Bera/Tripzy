@@ -1,10 +1,16 @@
 import * as React from "react"
 import { ChevronLeft, ChevronRight, MoreHorizontal } from "lucide-react"
+import { VariantProps } from "class-variance-authority"
 
 import { cn } from "@/lib/utils"
-import { ButtonProps, buttonVariants } from "@/components/ui/button"
+import { buttonVariants } from "@/components/ui/button"
 
-const Pagination = ({ className, ...props }: React.ComponentProps<"nav">) => (
+/* ================= ROOT ================= */
+
+const Pagination = ({
+  className,
+  ...props
+}: React.ComponentProps<"nav">) => (
   <nav
     role="navigation"
     aria-label="pagination"
@@ -13,6 +19,8 @@ const Pagination = ({ className, ...props }: React.ComponentProps<"nav">) => (
   />
 )
 Pagination.displayName = "Pagination"
+
+/* ================= CONTENT ================= */
 
 const PaginationContent = React.forwardRef<
   HTMLUListElement,
@@ -34,10 +42,13 @@ const PaginationItem = React.forwardRef<
 ))
 PaginationItem.displayName = "PaginationItem"
 
-type PaginationLinkProps = {
-  isActive?: boolean
-} & Pick<ButtonProps, "size"> &
-  React.ComponentProps<"a">
+/* ================= LINK ================= */
+
+type PaginationLinkProps =
+  React.ComponentProps<"a"> &
+  VariantProps<typeof buttonVariants> & {
+    isActive?: boolean
+  }
 
 const PaginationLink = ({
   className,
@@ -59,10 +70,12 @@ const PaginationLink = ({
 )
 PaginationLink.displayName = "PaginationLink"
 
+/* ================= PREV / NEXT ================= */
+
 const PaginationPrevious = ({
   className,
   ...props
-}: React.ComponentProps<typeof PaginationLink>) => (
+}: Omit<React.ComponentProps<typeof PaginationLink>, "size">) => (
   <PaginationLink
     aria-label="Go to previous page"
     size="default"
@@ -78,7 +91,7 @@ PaginationPrevious.displayName = "PaginationPrevious"
 const PaginationNext = ({
   className,
   ...props
-}: React.ComponentProps<typeof PaginationLink>) => (
+}: Omit<React.ComponentProps<typeof PaginationLink>, "size">) => (
   <PaginationLink
     aria-label="Go to next page"
     size="default"
@@ -90,6 +103,8 @@ const PaginationNext = ({
   </PaginationLink>
 )
 PaginationNext.displayName = "PaginationNext"
+
+/* ================= ELLIPSIS ================= */
 
 const PaginationEllipsis = ({
   className,
@@ -106,11 +121,13 @@ const PaginationEllipsis = ({
 )
 PaginationEllipsis.displayName = "PaginationEllipsis"
 
+/* ================= EXPORTS ================= */
+
 export {
   Pagination,
   PaginationContent,
-  PaginationLink,
   PaginationItem,
+  PaginationLink,
   PaginationPrevious,
   PaginationNext,
   PaginationEllipsis,

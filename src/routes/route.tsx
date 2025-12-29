@@ -1,40 +1,60 @@
-import {
-  BrowserRouter,
-  Routes,
-  Route,
-} from "react-router-dom";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { lazy, Suspense } from "react";
 
+// Route guards
 import PrivateRoute from "./private/PrivateRoute";
 import AdminRoute from "./private/AdminRoute";
 import ProviderRoute from "./private/ProviderRoute";
 
-// Public
+/* ================= NOT LAZY (FAST FIRST LOAD) ================= */
+
+// Public pages
+import HomePage from "@/pages/Home/page";
 import LoginPage from "@/pages/auth/login/page";
 import SignupPage from "@/pages/auth/signup/page";
 import OTPPage from "@/pages/auth/otp/page";
-import HomePage from "@/pages/Home/page";
+import { Roles } from "@/pages/provider/Role/page";
+
+/* ================= LAZY (HEAVY PANELS) ================= */
 
 // Admin
-import AdminLayout from "@/pages/admin/layout";
-import AdminDashboard from "@/pages/admin/page";
+const AdminLayout = lazy(() => import("@/pages/admin/layout"));
+const AdminDashboard = lazy(() => import("@/pages/admin/page"));
 
 // Provider
-import ProviderLayout from "@/pages/provider/Providerlayout";
-import ProviderDashboard from "@/pages/provider/page";
-import { Roles } from "@/pages/provider/Role/page";
+const ProviderLayout = lazy(() => import("@/pages/provider/Providerlayout"));
+const ProviderDashboard = lazy(() => import("@/pages/provider/page"));
+
+/* ================= LOADER ================= */
+
+const PanelLoader = () => (
+  <div className="flex h-screen items-center justify-center">
+    <span className="text-sm text-muted-foreground">Loading panel…</span>
+  </div>
+);
+
+/* ================= ROUTES ================= */
 
 export default function AppRoutes() {
   return (
     <BrowserRouter>
       <Routes>
+        {/* 🌍 Public (FAST) */}
         <Route path="/" element={<HomePage />} />
         <Route path="/login" element={<LoginPage />} />
         <Route path="/signup" element={<SignupPage />} />
         <Route path="/otp" element={<OTPPage />} />
 
-    
+        {/* Logged-in only */}
         <Route element={<PrivateRoute />}>
-          <Route element={<AdminRoute />}>
+          {/* Admin (LAZY) */}
+          <Route
+            element={
+              <Suspense fallback={<PanelLoader />}>
+                <AdminRoute />
+              </Suspense>
+            }
+          >
             <Route
               path="/admin"
               element={
@@ -45,7 +65,14 @@ export default function AppRoutes() {
             />
           </Route>
 
-          <Route element={<ProviderRoute />}>
+          {/* Provider (LAZY) */}
+          <Route
+            element={
+              <Suspense fallback={<PanelLoader />}>
+                <ProviderRoute />
+              </Suspense>
+            }
+          >
             <Route
               path="/provider"
               element={
@@ -66,7 +93,7 @@ export default function AppRoutes() {
         </Route>
 
         {/* 404 */}
-        <Route path="*" element={<h1>404 - Not found</h1>} />
+        <Route path="*" element={<h1>404 - Not Found</h1>} />
       </Routes>
     </BrowserRouter>
   );

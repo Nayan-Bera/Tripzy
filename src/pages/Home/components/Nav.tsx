@@ -6,13 +6,20 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Heart, LogOut, User } from "lucide-react";
+import { Avatar, AvatarFallback } from "@/components/ui/avatar";
+import {
+  Heart,
+  LogOut,
+  User,
+  LayoutDashboard,
+  Building2,
+} from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { LayoutDashboard, Building2 } from "lucide-react";
 
-import { selectCurrentAuthData, logout } from "@/features/auth/authSlice";
+import { selectCurrentAuth, logout } from "@/features/auth/authSlice";
+
+/* ================= STATIC LINKS ================= */
 
 const navLinks = [
   { label: "Hotels", href: "#hotels" },
@@ -22,34 +29,31 @@ const navLinks = [
 ];
 
 export const Nav: React.FC = () => {
-  const auth = useSelector(selectCurrentAuthData);
+  const auth = useSelector(selectCurrentAuth);
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  // const location = useLocation();
 
   const isLoggedIn = !!auth.access_token;
 
-  // Hide "Become a Host" on login & signup
-  // const hideBecomeHost =
-  // 	location.pathname === "/login" || location.pathname === "/signup";
+  const user = auth.user;
+  const isAdmin =
+    user?.platformRole === "ADMIN" ||
+    user?.platformRole === "SUPER_ADMIN";
+
+  const isProvider = auth.hotelAccess.length > 0;
 
   const handleLogout = () => {
     dispatch(logout());
     navigate("/login");
   };
 
-  // Generate avatar initials from name
   const getInitials = () => {
-    if (!auth?.name) return "U";
-
-    const words = auth.name.trim().split(" ");
-    if (words.length === 1) return words[0][0].toUpperCase();
-
-    return `${words[0][0]}${words[1][0]}`.toUpperCase();
+    if (!user?.name) return "U";
+    const words = user.name.trim().split(" ");
+    return words.length === 1
+      ? words[0][0].toUpperCase()
+      : `${words[0][0]}${words[1][0]}`.toUpperCase();
   };
-  const role = auth?.role;
-  const isAdmin = role === "admin";
-  const isProvider = role === "hotel";
 
   return (
     <header className="sticky top-0 z-40 border-b bg-background/80 backdrop-blur">
@@ -59,10 +63,12 @@ export const Nav: React.FC = () => {
           <span className="inline-flex h-8 w-8 items-center justify-center rounded-xl bg-linear-to-tr from-sky-500 to-teal-400 text-lg font-bold text-white">
             TY
           </span>
-          <span className="text-lg font-semibold tracking-tight">TRIPZY</span>
+          <span className="text-lg font-semibold tracking-tight">
+            TRIPZY
+          </span>
         </Link>
 
-        {/* Nav */}
+        {/* Center Nav */}
         <nav className="hidden items-center gap-6 text-sm font-medium md:flex">
           {navLinks.map((link) => (
             <a
@@ -77,7 +83,6 @@ export const Nav: React.FC = () => {
 
         {/* Right Actions */}
         <div className="flex items-center gap-2">
-          {/* Logged-in UI */}
           {isLoggedIn ? (
             <>
               {/* Wishlist */}
@@ -87,18 +92,17 @@ export const Nav: React.FC = () => {
                 </Button>
               </Link>
 
-              {/* User Dropdown */}
+              {/* User Menu */}
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
                   <button className="outline-none">
                     <Avatar className="h-9 w-9 cursor-pointer">
-                      <AvatarImage src={auth.avatar ?? ""} />
                       <AvatarFallback>{getInitials()}</AvatarFallback>
                     </Avatar>
                   </button>
                 </DropdownMenuTrigger>
 
-                <DropdownMenuContent align="end" className="w-44">
+                <DropdownMenuContent align="end" className="w-48">
                   <Link to="/profile">
                     <DropdownMenuItem>
                       <User className="mr-2 h-4 w-4" />
@@ -112,21 +116,23 @@ export const Nav: React.FC = () => {
                       Wishlist
                     </DropdownMenuItem>
                   </Link>
+
+                  {/* Provider */}
                   {isProvider && (
                     <Link to="/provider">
                       <DropdownMenuItem>
                         <Building2 className="mr-2 h-4 w-4" />
-                        Provider Dashboard
+                        Provider Panel
                       </DropdownMenuItem>
                     </Link>
                   )}
 
-                  {/* Admin Dashboard */}
+                  {/* Admin */}
                   {isAdmin && (
                     <Link to="/admin">
                       <DropdownMenuItem>
                         <LayoutDashboard className="mr-2 h-4 w-4" />
-                        Admin Dashboard
+                        Admin Panel
                       </DropdownMenuItem>
                     </Link>
                   )}
@@ -144,7 +150,6 @@ export const Nav: React.FC = () => {
               </DropdownMenu>
             </>
           ) : (
-            /* Guest UI */
             <>
               <Button variant="outline" size="sm">
                 Become a Host
