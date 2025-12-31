@@ -1,7 +1,7 @@
 import React from "react";
 import { DealsSection } from "./components/Deals";
 import { FeaturedHotelsSection } from "./components/FeaturedHotels";
-import { Footer } from "./components/footer";
+import { Footer } from "./components/Footer";
 import {  Nav } from "./components/Nav";
 import { HeroSection } from "./components/HeroSection";
 import { CategoriesSection } from "./components/HotelsCategories";
