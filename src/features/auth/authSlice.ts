@@ -13,7 +13,7 @@ export type AuthUser = {
   id: string;
   name: string;
   email: string;
-  platformRole: "USER" | "ADMIN" | "SUPER_ADMIN";
+  platformRole: "user" | "admin" | "super_admin";
   email_verified: boolean;
 };
 

@@ -37,8 +37,8 @@ export const Nav: React.FC = () => {
 
   const user = auth.user;
   const isAdmin =
-    user?.platformRole === "ADMIN" ||
-    user?.platformRole === "SUPER_ADMIN";
+    user?.platformRole === "admin" ||
+    user?.platformRole === "super_admin";
 
   const isProvider = auth.hotelAccess.length > 0;
 
