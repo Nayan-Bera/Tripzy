@@ -23,7 +23,7 @@ const ContactUs = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-sky-50 via-white to-blue-50">
+    <div className="min-h-screen bg-linear-to-br from-sky-50 via-white to-blue-50">
       {/* Header */}
       <section className="py-14 text-center">
         <h1 className="text-4xl font-bold tracking-tight">
