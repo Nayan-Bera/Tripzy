@@ -1,19 +1,19 @@
 import React from "react";
 import { DealsSection } from "./components/Deals";
 import { FeaturedHotelsSection } from "./components/FeaturedHotels";
-import { Footer } from "./components/Footer";
 import {  Nav } from "./components/Nav";
 import { HeroSection } from "./components/HeroSection";
 import { CategoriesSection } from "./components/HotelsCategories";
 import { HowItWorksSection } from "./components/HowItsWoek";
 import { PopularDestinationsSection } from "./components/PopularDestination";
 import { ReviewsSection } from "./components/Review";
+import { Footer } from "./components/footer";
 
 
 const HomePage: React.FC = () => {
   return (
     <div className="min-h-screen bg-background text-foreground">
-      <Nav />
+      {/* <Nav /> */}
       <HeroSection />
       <PopularDestinationsSection />
       <CategoriesSection />
@@ -21,7 +21,8 @@ const HomePage: React.FC = () => {
       <DealsSection />
       <ReviewsSection />
       <HowItWorksSection />
-      <Footer />
+      {/* <Footer /> */}
+
     </div>
   );
 };

@@ -1,7 +1,3 @@
-// 
-
-
-
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { lazy, Suspense } from "react";
 
@@ -15,8 +11,9 @@ import HomePage from "@/pages/Home/page";
 import LoginPage from "@/pages/auth/login/page";
 import SignupPage from "@/pages/auth/signup/page";
 import OTPPage from "@/pages/auth/otp/page";
-import ContactUs from "@/pages/auth/contactus/ContactUs";
+import ContactUs from "@/pages/Home/contactus/ContactUs";
 import { Roles } from "@/pages/provider/Role/page";
+import PublicLayout from "@/layouts/PublicLayout";
 
 // Lazy pages
 const AdminLayout = lazy(() => import("@/pages/admin/layout"));
@@ -35,10 +32,11 @@ export default function AppRoutes() {
     <BrowserRouter>
       <Routes>
         {/* 🌍 Public */}
-        <Route path="/contact-us" element={<ContactUs />} />
-        
-        <Route path="/" element={<HomePage />} />
-        <Route path="/contact-us" element={<ContactUs />} />
+        <Route element={<PublicLayout />}>
+          <Route path="/" element={<HomePage />} />
+          <Route path="/contact-us" element={<ContactUs />} />
+        </Route>
+
         <Route path="/login" element={<LoginPage />} />
         <Route path="/signup" element={<SignupPage />} />
         <Route path="/otp" element={<OTPPage />} />

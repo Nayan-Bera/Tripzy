@@ -104,8 +104,8 @@ export function AppSidebar(props: React.ComponentProps<typeof Sidebar>) {
         email: auth.user.email,
         avatar: "", // you can wire this later
         role:
-          auth.user.platformRole === "ADMIN" ||
-          auth.user.platformRole === "SUPER_ADMIN"
+          auth.user.platformRole === "admin" ||
+          auth.user.platformRole === "super_admin"
             ? auth.user.platformRole
             : auth.hotelAccess.length > 0
             ? auth.hotelAccess[0].role
