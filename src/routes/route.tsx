@@ -14,6 +14,7 @@ import OTPPage from "@/pages/auth/otp/page";
 import ContactUs from "@/pages/Home/contactus/ContactUs";
 import { Roles } from "@/pages/provider/Role/page";
 import PublicLayout from "@/layouts/PublicLayout";
+import { AdminContactUs } from "@/pages/admin/contact-us/page";
 
 // Lazy pages
 const AdminLayout = lazy(() => import("@/pages/admin/layout"));
@@ -56,6 +57,14 @@ export default function AppRoutes() {
               element={
                 <AdminLayout>
                   <AdminDashboard />
+                </AdminLayout>
+              }
+            />
+            <Route
+              path="/admin/contact-us"
+              element={
+                <AdminLayout>
+                  <AdminContactUs />
                 </AdminLayout>
               }
             />
