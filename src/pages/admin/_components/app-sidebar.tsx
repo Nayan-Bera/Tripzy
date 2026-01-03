@@ -8,6 +8,7 @@ import {
   PieChart,
   Settings2,
   SquareTerminal,
+  SuperscriptIcon,
 } from "lucide-react";
 import * as React from "react";
 
@@ -56,12 +57,6 @@ export function AppSidebar(props: React.ComponentProps<typeof Sidebar>) {
     url: "/admin",
     icon: SquareTerminal,
     isActive: true,
-    items: [
-      {
-        title: "Contact Us",
-        url: "/admin/contact-us",
-      },
-    ],
   },
   {
     title: "Users",
@@ -77,6 +72,17 @@ export function AppSidebar(props: React.ComponentProps<typeof Sidebar>) {
     title: "Reports",
     url: "/admin/reports",
     icon: BookOpen,
+  },
+  {
+    title: "supports",
+    icon: SuperscriptIcon,
+    url: "#",
+     items: [
+      {
+        title: "Contact Us",
+        url: "/admin/contact-us",
+      },
+    ],
   },
   {
     title: "Settings",
