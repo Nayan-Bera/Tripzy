@@ -1,12 +1,10 @@
-import { ContactUsTable } from "./components/contact-us-table"
-
+import { ContactUsTable } from "./components/contact-us-table";
 
 export const AdminContactUs = () => {
   return (
-    <div className="flex min-h-svh w-full items-center justify-center p-6 md:p-10">
-      <div className="w-full max-w-sm md:max-w-3xl">
-        <ContactUsTable />
-      </div>
+    <div className="w-full">
+        <h3>Contact Us</h3>
+      <ContactUsTable />
     </div>
-  )
-}
+  );
+};

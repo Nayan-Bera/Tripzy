@@ -1,7 +1,8 @@
 import React from "react";
 import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar";
-import { AppSidebar } from "../provider/_components/app-sidebar";
+
 import { SiteHeader } from "./_components/site-header";
+import { AppSidebar } from "./_components/app-sidebar";
 
 interface AdminLayoutProps {
   children: React.ReactNode;
