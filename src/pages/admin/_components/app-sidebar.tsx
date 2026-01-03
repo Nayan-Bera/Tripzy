@@ -2,13 +2,15 @@
 
 import {
   BookOpen,
-  Bot,
+  CalendarCheck,
   Frame,
-  Map,
+  Headset,
+  Hotel,
   PieChart,
   Settings2,
+  Shield,
   SquareTerminal,
-  SuperscriptIcon,
+  Users
 } from "lucide-react";
 import * as React from "react";
 
@@ -41,58 +43,101 @@ export function AppSidebar(props: React.ComponentProps<typeof Sidebar>) {
     return <Navigate to="/" replace />;
   }
 
+  const isSuperAdmin = auth.user.platformRole === "super_admin";
+
   /* ================= USER ================= */
 
   const user = {
     name: auth.user.name,
     email: auth.user.email,
-    avatar: "", // wire later if needed
+    avatar: "",
   };
 
-  /* ================= NAV ================= */
+  /* ================= MAIN NAV ================= */
 
- const navMain = [
-  {
-    title: "Dashboard",
-    url: "/admin",
-    icon: SquareTerminal,
-    isActive: true,
-  },
-  {
-    title: "Users",
-    url: "/admin/users",
-    icon: Bot,
-  },
-  {
-    title: "Hotels",
-    url: "/admin/hotels",
-    icon: Map,
-  },
-  {
-    title: "Reports",
-    url: "/admin/reports",
-    icon: BookOpen,
-  },
-  {
-    title: "supports",
-    icon: SuperscriptIcon,
-    url: "#",
-     items: [
-      {
-        title: "Contact Us",
-        url: "/admin/contact-us",
-      },
-    ],
-  },
-  {
-    title: "Settings",
-    url: "/admin/settings",
-    icon: Settings2,
-  },
-];
+  const navMain = [
+    {
+      title: "Dashboard",
+      url: "/admin",
+      icon: SquareTerminal,
+    },
 
+    {
+      title: "Users",
+      url: "/admin/users",
+      icon: Users,
+    },
 
-  const projects = auth.user.platformRole === "super_admin"
+    {
+      title: "Hotels",
+      icon: Hotel,
+      url: "/admin/hotels",
+      items: [
+        {
+          title: "All Hotels",
+          url: "/admin/hotels",
+        },
+        {
+          title: "Add Hotel",
+          url: "/admin/hotels/create",
+        },
+        {
+          title: "Hotel Rooms",
+          url: "/admin/hotels/rooms",
+        },
+        {
+          title: "Hotel Bookings",
+          url: "/admin/hotels/bookings",
+        },
+        {
+          title: "Hotel Staff",
+          url: "/admin/hotels/staff",
+        },
+      ],
+    },
+
+    {
+      title: "Bookings",
+      url: "/admin/bookings",
+      icon: CalendarCheck,
+    },
+
+    {
+      title: "Reports",
+      icon: BookOpen,
+      url: "/admin/reports",
+      items: [
+        {
+          title: "Booking Reports",
+          url: "/admin/reports/bookings",
+        },
+        {
+          title: "Revenue Reports",
+          url: "/admin/reports/revenue",
+        },
+        {
+          title: "Hotel Performance",
+          url: "/admin/reports/hotels",
+        },
+      ],
+    },
+
+    {
+      title: "Support",
+      icon: Headset,
+      url: "/admin/contact-us",
+    },
+
+    {
+      title: "Settings",
+      url: "/admin/settings",
+      icon: Settings2,
+    },
+  ];
+
+  /* ================= SUPER ADMIN NAV ================= */
+
+  const superAdminProjects = isSuperAdmin
     ? [
         {
           name: "Platform Analytics",
@@ -100,7 +145,12 @@ export function AppSidebar(props: React.ComponentProps<typeof Sidebar>) {
           icon: PieChart,
         },
         {
-          name: "System Config",
+          name: "Roles & Permissions",
+          url: "/admin/system/roles",
+          icon: Shield,
+        },
+        {
+          name: "System Configuration",
           url: "/admin/system",
           icon: Frame,
         },
@@ -113,7 +163,9 @@ export function AppSidebar(props: React.ComponentProps<typeof Sidebar>) {
     <Sidebar collapsible="icon" {...props}>
       <SidebarContent>
         <NavMain items={navMain} />
-        {projects.length > 0 && <NavProjects projects={projects} />}
+        {superAdminProjects.length > 0 && (
+          <NavProjects projects={superAdminProjects} />
+        )}
       </SidebarContent>
 
       <SidebarFooter>
