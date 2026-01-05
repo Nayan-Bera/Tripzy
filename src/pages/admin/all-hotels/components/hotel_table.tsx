@@ -1,40 +1,44 @@
 "use client"
 
-import * as React from "react"
 import {
-  flexRender,
-  getCoreRowModel,
-  getFilteredRowModel,
-  getPaginationRowModel,
-  getSortedRowModel,
-  useReactTable,
-  type ColumnDef,
-  type ColumnFiltersState,
-  type SortingState,
-  type VisibilityState,
+    flexRender,
+    getCoreRowModel,
+    getFilteredRowModel,
+    getPaginationRowModel,
+    getSortedRowModel,
+    useReactTable,
+    type ColumnDef,
+    type ColumnFiltersState,
+    type SortingState,
+    type VisibilityState,
 } from "@tanstack/react-table"
-import { ArrowUpDown, ChevronDown, MoreHorizontal, Plus } from "lucide-react"
+import {
+    ArrowUpDown,
+    ChevronDown,
+    MoreHorizontal
+} from "lucide-react"
+import * as React from "react"
 import { useNavigate } from "react-router-dom"
 
 import { Button } from "@/components/ui/button"
 import { Checkbox } from "@/components/ui/checkbox"
 import {
-  DropdownMenu,
-  DropdownMenuCheckboxItem,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
+    DropdownMenu,
+    DropdownMenuCheckboxItem,
+    DropdownMenuContent,
+    DropdownMenuItem,
+    DropdownMenuLabel,
+    DropdownMenuSeparator,
+    DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import { Input } from "@/components/ui/input"
 import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
+    Table,
+    TableBody,
+    TableCell,
+    TableHead,
+    TableHeader,
+    TableRow,
 } from "@/components/ui/table"
 
 /* ================= TYPES ================= */
@@ -45,9 +49,12 @@ export type Hotel = {
   ownerEmail: string
   contact: string
   verified: boolean
+  totalRooms: number
+  totalBookings: number
+  status: "active" | "inactive"
 }
 
-/* ================= MOCK DATA (replace with API) ================= */
+/* ================= TEMP DATA (replace with API later) ================= */
 
 const data: Hotel[] = [
   {
@@ -56,6 +63,9 @@ const data: Hotel[] = [
     ownerEmail: "owner1@example.com",
     contact: "+1-555-111-2222",
     verified: true,
+    totalRooms: 42,
+    totalBookings: 312,
+    status: "active",
   },
   {
     id: "2",
@@ -63,6 +73,9 @@ const data: Hotel[] = [
     ownerEmail: "owner2@example.com",
     contact: "+1-555-333-4444",
     verified: false,
+    totalRooms: 18,
+    totalBookings: 91,
+    status: "inactive",
   },
 ]
 
@@ -123,7 +136,7 @@ export const columns: ColumnDef<Hotel>[] = [
         className={
           row.getValue("verified")
             ? "text-green-600 font-medium"
-            : "text-red-500 font-medium"
+            : "text-red-600 font-medium"
         }
       >
         {row.getValue("verified") ? "Yes" : "No"}
@@ -132,7 +145,34 @@ export const columns: ColumnDef<Hotel>[] = [
   },
 
   {
+    accessorKey: "totalRooms",
+    header: "Total Rooms",
+  },
+
+  {
+    accessorKey: "totalBookings",
+    header: "Total Bookings",
+  },
+
+  {
+    accessorKey: "status",
+    header: "Status",
+    cell: ({ row }) => (
+      <span
+        className={
+          row.getValue("status") === "active"
+            ? "text-green-600 font-medium"
+            : "text-red-600 font-medium"
+        }
+      >
+        {row.getValue("status")}
+      </span>
+    ),
+  },
+
+  {
     id: "actions",
+    enableHiding: false,
     cell: ({ row }) => {
       const hotel = row.original
 
@@ -145,13 +185,17 @@ export const columns: ColumnDef<Hotel>[] = [
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end">
             <DropdownMenuLabel>Actions</DropdownMenuLabel>
+
             <DropdownMenuItem>
               View Hotel
             </DropdownMenuItem>
+
             <DropdownMenuItem>
               Edit Hotel
             </DropdownMenuItem>
+
             <DropdownMenuSeparator />
+
             <DropdownMenuItem className="text-red-600">
               Disable Hotel
             </DropdownMenuItem>
@@ -196,7 +240,7 @@ export function AdminHotelsTable() {
   return (
     <div className="w-full">
       {/* ================= TOP BAR ================= */}
-      <div className="flex items-center py-4 gap-2">
+      <div className="flex items-center gap-2 py-4">
         <Input
           placeholder="Filter hotels..."
           value={(table.getColumn("name")?.getFilterValue() as string) ?? ""}
@@ -206,13 +250,13 @@ export function AdminHotelsTable() {
           className="max-w-sm"
         />
 
-        <Button
+        {/* <Button
           className="ml-auto"
           onClick={() => navigate("/admin/hotels/create")}
         >
           <Plus className="mr-2 h-4 w-4" />
           Add Hotel
-        </Button>
+        </Button> */}
 
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
@@ -273,7 +317,10 @@ export function AdminHotelsTable() {
               ))
             ) : (
               <TableRow>
-                <TableCell colSpan={columns.length} className="h-24 text-center">
+                <TableCell
+                  colSpan={columns.length}
+                  className="h-24 text-center"
+                >
                   No hotels found.
                 </TableCell>
               </TableRow>

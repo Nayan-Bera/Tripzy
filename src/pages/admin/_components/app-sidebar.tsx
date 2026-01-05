@@ -75,11 +75,7 @@ export function AppSidebar(props: React.ComponentProps<typeof Sidebar>) {
       items: [
         {
           title: "All Hotels",
-          url: "/admin/hotels",
-        },
-        {
-          title: "Add Hotel",
-          url: "/admin/hotels/create",
+          url: "/admin/all-hotels",
         },
         {
           title: "Hotel Rooms",
