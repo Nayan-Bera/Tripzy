@@ -16,6 +16,7 @@ import { Roles } from "@/pages/provider/Role/page";
 import PublicLayout from "@/layouts/PublicLayout";
 import { AdminContactUs } from "@/pages/admin/contact-us/page";
 import { AllHotels } from "@/pages/admin/all-hotels/page";
+import { MyHotels } from "@/pages/provider/hotels/page";
 
 // Lazy pages
 const AdminLayout = lazy(() => import("@/pages/admin/layout"));
@@ -62,13 +63,13 @@ export default function AppRoutes() {
               }
             />
             <Route
-              path = "/admin/all-hotels"
+              path="/admin/all-hotels"
               element={
                 <AdminLayout>
                   <AllHotels />
                 </AdminLayout>
               }
-              />
+            />
             <Route
               path="/admin/contact-us"
               element={
@@ -100,6 +101,14 @@ export default function AppRoutes() {
               element={
                 <ProviderLayout>
                   <Roles />
+                </ProviderLayout>
+              }
+            />
+            <Route
+              path="/provider/hotels"
+              element={
+                <ProviderLayout>
+                  <MyHotels />
                 </ProviderLayout>
               }
             />

@@ -1,23 +1,16 @@
 "use client"
 
 import {
+    ColumnDef,
     flexRender,
     getCoreRowModel,
     getFilteredRowModel,
     getPaginationRowModel,
     getSortedRowModel,
     useReactTable,
-    type ColumnDef,
-    type ColumnFiltersState,
-    type SortingState,
-    type VisibilityState,
 } from "@tanstack/react-table"
-import {
-    ArrowUpDown,
-    ChevronDown,
-    MoreHorizontal
-} from "lucide-react"
-import * as React from "react"
+import { ChevronDown, MoreHorizontal, Plus } from "lucide-react"
+import { useNavigate } from "react-router-dom"
 
 import { Button } from "@/components/ui/button"
 import { Checkbox } from "@/components/ui/checkbox"
@@ -27,7 +20,6 @@ import {
     DropdownMenuContent,
     DropdownMenuItem,
     DropdownMenuLabel,
-    DropdownMenuSeparator,
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import { Input } from "@/components/ui/input"
@@ -40,12 +32,12 @@ import {
     TableRow,
 } from "@/components/ui/table"
 
-/* ================= TYPES ================= */
-
-export type Hotel = {
+export type ProviderHotel = {
   id: string
   name: string
-  ownerEmail: string
+  country: string
+  state: string
+  city: string
   contact: string
   verified: boolean
   totalRooms: number
@@ -53,14 +45,14 @@ export type Hotel = {
   status: "active" | "inactive"
 }
 
-/* ================= TEMP DATA (replace with API later) ================= */
-
-const data: Hotel[] = [
+const data: ProviderHotel[] = [
   {
     id: "1",
     name: "Grand Palace Hotel",
-    ownerEmail: "owner1@example.com",
-    contact: "+1-555-111-2222",
+    country: "India",
+    state: "Maharashtra",
+    city: "Mumbai",
+    contact: "+91-9876543210",
     verified: true,
     totalRooms: 42,
     totalBookings: 312,
@@ -69,8 +61,10 @@ const data: Hotel[] = [
   {
     id: "2",
     name: "Sea View Resort",
-    ownerEmail: "owner2@example.com",
-    contact: "+1-555-333-4444",
+    country: "India",
+    state: "Goa",
+    city: "Panaji",
+    contact: "+91-9988776655",
     verified: false,
     totalRooms: 18,
     totalBookings: 91,
@@ -78,9 +72,8 @@ const data: Hotel[] = [
   },
 ]
 
-/* ================= COLUMNS ================= */
 
-export const columns: ColumnDef<Hotel>[] = [
+export const providerHotelColumns: ColumnDef<ProviderHotel>[] = [
   {
     id: "select",
     header: ({ table }) => (
@@ -104,67 +97,59 @@ export const columns: ColumnDef<Hotel>[] = [
 
   {
     accessorKey: "name",
-    header: ({ column }) => (
-      <Button
-        variant="ghost"
-        onClick={() =>
-          column.toggleSorting(column.getIsSorted() === "asc")
-        }
-      >
-        Hotel Name
-        <ArrowUpDown className="ml-2 h-4 w-4" />
-      </Button>
-    ),
+    header: "Hotel Name",
   },
-
   {
-    accessorKey: "ownerEmail",
-    header: "Owner Email",
+    accessorKey: "country",
+    header: "Country",
   },
-
+  {
+    accessorKey: "state",
+    header: "State",
+  },
+  {
+    accessorKey: "city",
+    header: "City",
+  },
   {
     accessorKey: "contact",
     header: "Contact",
   },
-
   {
     accessorKey: "verified",
     header: "Verified",
     cell: ({ row }) => (
       <span
         className={
-          row.getValue("verified")
+          row.original.verified
             ? "text-green-600 font-medium"
             : "text-red-600 font-medium"
         }
       >
-        {row.getValue("verified") ? "Yes" : "No"}
+        {row.original.verified ? "Yes" : "No"}
       </span>
     ),
   },
-
   {
     accessorKey: "totalRooms",
-    header: "Total Rooms",
+    header: "Rooms",
   },
-
   {
     accessorKey: "totalBookings",
-    header: "Total Bookings",
+    header: "Bookings",
   },
-
   {
     accessorKey: "status",
     header: "Status",
     cell: ({ row }) => (
       <span
         className={
-          row.getValue("status") === "active"
+          row.original.status === "active"
             ? "text-green-600 font-medium"
             : "text-red-600 font-medium"
         }
       >
-        {row.getValue("status")}
+        {row.original.status}
       </span>
     ),
   },
@@ -193,10 +178,8 @@ export const columns: ColumnDef<Hotel>[] = [
               Edit Hotel
             </DropdownMenuItem>
 
-            <DropdownMenuSeparator />
-
-            <DropdownMenuItem className="text-red-600">
-              Disable Hotel
+            <DropdownMenuItem>
+              Manage Rooms
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
@@ -205,35 +188,16 @@ export const columns: ColumnDef<Hotel>[] = [
   },
 ]
 
-/* ================= TABLE ================= */
-
-export function AdminHotelsTable() {
-//   const navigate = useNavigate()
-
-  const [sorting, setSorting] = React.useState<SortingState>([])
-  const [columnFilters, setColumnFilters] =
-    React.useState<ColumnFiltersState>([])
-  const [columnVisibility, setColumnVisibility] =
-    React.useState<VisibilityState>({})
-  const [rowSelection, setRowSelection] = React.useState({})
+export function ProviderHotelsTable() {
+  const navigate = useNavigate()
 
   const table = useReactTable({
     data,
-    columns,
-    onSortingChange: setSorting,
-    onColumnFiltersChange: setColumnFilters,
+    columns: providerHotelColumns,
     getCoreRowModel: getCoreRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
     getSortedRowModel: getSortedRowModel(),
     getFilteredRowModel: getFilteredRowModel(),
-    onColumnVisibilityChange: setColumnVisibility,
-    onRowSelectionChange: setRowSelection,
-    state: {
-      sorting,
-      columnFilters,
-      columnVisibility,
-      rowSelection,
-    },
   })
 
   return (
@@ -241,21 +205,21 @@ export function AdminHotelsTable() {
       {/* ================= TOP BAR ================= */}
       <div className="flex items-center gap-2 py-4">
         <Input
-          placeholder="Filter hotels..."
+          placeholder="Search hotels..."
           value={(table.getColumn("name")?.getFilterValue() as string) ?? ""}
-          onChange={(event) =>
-            table.getColumn("name")?.setFilterValue(event.target.value)
+          onChange={(e) =>
+            table.getColumn("name")?.setFilterValue(e.target.value)
           }
           className="max-w-sm"
         />
 
-        {/* <Button
+        <Button
           className="ml-auto"
-          onClick={() => navigate("/admin/hotels/create")}
+          onClick={() => navigate("/provider/hotels/create")}
         >
           <Plus className="mr-2 h-4 w-4" />
           Add Hotel
-        </Button> */}
+        </Button>
 
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
@@ -286,9 +250,9 @@ export function AdminHotelsTable() {
       <div className="rounded-md border">
         <Table>
           <TableHeader>
-            {table.getHeaderGroups().map((headerGroup) => (
-              <TableRow key={headerGroup.id}>
-                {headerGroup.headers.map((header) => (
+            {table.getHeaderGroups().map((group) => (
+              <TableRow key={group.id}>
+                {group.headers.map((header) => (
                   <TableHead key={header.id}>
                     {flexRender(
                       header.column.columnDef.header,
@@ -317,10 +281,10 @@ export function AdminHotelsTable() {
             ) : (
               <TableRow>
                 <TableCell
-                  colSpan={columns.length}
+                  colSpan={providerHotelColumns.length}
                   className="h-24 text-center"
                 >
-                  No hotels found.
+                  No hotels found
                 </TableCell>
               </TableRow>
             )}
