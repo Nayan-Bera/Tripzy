@@ -68,6 +68,6 @@ export const apiSlice = createApi({
   baseQuery: baseQueryWithReauth,
   refetchOnFocus: true,
   refetchOnReconnect: true,
-  tagTypes: ["User"],
+  tagTypes: ["User", "Hotel"],
   endpoints: () => ({}),
 });
