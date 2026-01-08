@@ -11,7 +11,24 @@ export interface CreateHotelRequest {
 export interface CreateHotelResponse {
   message: string;
 }
+export interface HotelListItem {
+  id: string;
+  name: string;
+  contact: string;
+  verified: boolean;
+  owner: {
+    id: string;
+    email: string;
+    name: string;
+  };
+  totalRooms: number;
+  totalBookings: number;
+  status: "active" | "inactive";
+}
 
+export interface GetHotelsResponse {
+  hotels: HotelListItem[];
+}
 /* ================= API ================= */
 
 export const adminHotelApiSlice = apiSlice.injectEndpoints({
@@ -27,7 +44,14 @@ export const adminHotelApiSlice = apiSlice.injectEndpoints({
       }),
       invalidatesTags: ["Hotel"],
     }),
+     getHotels: builder.query<
+      { message: string; data: HotelListItem[] },
+      void
+    >({
+      query: () => "/admin/hotel/all",
+      providesTags: ["Hotel"],
+    }),
   }),
 });
 
-export const { useCreateHotelMutation } = adminHotelApiSlice;
+export const { useCreateHotelMutation, useGetHotelsQuery } = adminHotelApiSlice;

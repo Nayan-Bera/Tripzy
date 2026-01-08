@@ -1,5 +1,6 @@
 "use client"
 
+import * as React from "react"
 import {
   flexRender,
   getCoreRowModel,
@@ -17,7 +18,6 @@ import {
   ChevronDown,
   MoreHorizontal,
 } from "lucide-react"
-import * as React from "react"
 
 import { Button } from "@/components/ui/button"
 import { Checkbox } from "@/components/ui/checkbox"
@@ -41,6 +41,7 @@ import {
 } from "@/components/ui/table"
 
 import { AddHotelDialog } from "./AddHotelDialog"
+import { HotelListItem, useGetHotelsQuery } from "@/features/admin/hotels/adminhotelApiSlice"
 
 /* ================= TYPES ================= */
 
@@ -55,34 +56,9 @@ export type Hotel = {
   status: "active" | "inactive"
 }
 
-/* ================= TEMP DATA ================= */
-
-const data: Hotel[] = [
-  {
-    id: "1",
-    name: "Grand Palace Hotel",
-    ownerEmail: "owner1@example.com",
-    contact: "+1-555-111-2222",
-    verified: true,
-    totalRooms: 42,
-    totalBookings: 312,
-    status: "active",
-  },
-  {
-    id: "2",
-    name: "Sea View Resort",
-    ownerEmail: "owner2@example.com",
-    contact: "+1-555-333-4444",
-    verified: false,
-    totalRooms: 18,
-    totalBookings: 91,
-    status: "inactive",
-  },
-]
-
 /* ================= COLUMNS ================= */
 
-export const columns: ColumnDef<Hotel>[] = [
+export const columns: ColumnDef<HotelListItem>[] = [
   {
     id: "select",
     header: ({ table }) => (
@@ -184,6 +160,10 @@ export const columns: ColumnDef<Hotel>[] = [
 /* ================= TABLE ================= */
 
 export function AdminHotelsTable() {
+  const { data, isLoading } = useGetHotelsQuery()
+
+  const hotels = data?.data ?? []
+
   const [sorting, setSorting] = React.useState<SortingState>([])
   const [columnFilters, setColumnFilters] =
     React.useState<ColumnFiltersState>([])
@@ -192,7 +172,7 @@ export function AdminHotelsTable() {
   const [rowSelection, setRowSelection] = React.useState({})
 
   const table = useReactTable({
-    data,
+    data: hotels,
     columns,
     onSortingChange: setSorting,
     onColumnFiltersChange: setColumnFilters,
@@ -210,6 +190,10 @@ export function AdminHotelsTable() {
     },
   })
 
+  if (isLoading) {
+    return <div className="p-4 text-sm">Loading hotels...</div>
+  }
+
   return (
     <div className="w-full">
       {/* ================= TOP BAR ================= */}
@@ -223,7 +207,7 @@ export function AdminHotelsTable() {
           className="max-w-sm"
         />
 
-        {/* ✅ ADD HOTEL DIALOG */}
+        {/* ADD HOTEL */}
         <div className="ml-auto">
           <AddHotelDialog />
         </div>
