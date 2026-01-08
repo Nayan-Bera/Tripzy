@@ -1,77 +1,41 @@
 "use client"
 
 import {
-    ColumnDef,
-    flexRender,
-    getCoreRowModel,
-    getFilteredRowModel,
-    getPaginationRowModel,
-    getSortedRowModel,
-    useReactTable,
+  ColumnDef,
+  flexRender,
+  getCoreRowModel,
+  getFilteredRowModel,
+  getPaginationRowModel,
+  getSortedRowModel,
+  useReactTable,
 } from "@tanstack/react-table"
-import { ChevronDown, MoreHorizontal, Plus } from "lucide-react"
+import { ChevronDown, MoreHorizontal } from "lucide-react"
 import { useNavigate } from "react-router-dom"
 
 import { Button } from "@/components/ui/button"
 import { Checkbox } from "@/components/ui/checkbox"
 import {
-    DropdownMenu,
-    DropdownMenuCheckboxItem,
-    DropdownMenuContent,
-    DropdownMenuItem,
-    DropdownMenuLabel,
-    DropdownMenuTrigger,
+  DropdownMenu,
+  DropdownMenuCheckboxItem,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import { Input } from "@/components/ui/input"
 import {
-    Table,
-    TableBody,
-    TableCell,
-    TableHead,
-    TableHeader,
-    TableRow,
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
 } from "@/components/ui/table"
+import { ProviderHotel, useGetProviderHotelsQuery } from "@/features/provider/hotel/providerHotelApiSlice"
 
-export type ProviderHotel = {
-  id: string
-  name: string
-  country: string
-  state: string
-  city: string
-  contact: string
-  verified: boolean
-  totalRooms: number
-  totalBookings: number
-  status: "active" | "inactive"
-}
 
-const data: ProviderHotel[] = [
-  {
-    id: "1",
-    name: "Grand Palace Hotel",
-    country: "India",
-    state: "Maharashtra",
-    city: "Mumbai",
-    contact: "+91-9876543210",
-    verified: true,
-    totalRooms: 42,
-    totalBookings: 312,
-    status: "active",
-  },
-  {
-    id: "2",
-    name: "Sea View Resort",
-    country: "India",
-    state: "Goa",
-    city: "Panaji",
-    contact: "+91-9988776655",
-    verified: false,
-    totalRooms: 18,
-    totalBookings: 91,
-    status: "inactive",
-  },
-]
 
+/* ================= COLUMNS ================= */
 
 export const providerHotelColumns: ColumnDef<ProviderHotel>[] = [
   {
@@ -82,39 +46,29 @@ export const providerHotelColumns: ColumnDef<ProviderHotel>[] = [
           table.getIsAllPageRowsSelected() ||
           (table.getIsSomePageRowsSelected() && "indeterminate")
         }
-        onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
+        onCheckedChange={(value) =>
+          table.toggleAllPageRowsSelected(!!value)
+        }
       />
     ),
     cell: ({ row }) => (
       <Checkbox
         checked={row.getIsSelected()}
-        onCheckedChange={(value) => row.toggleSelected(!!value)}
+        onCheckedChange={(value) =>
+          row.toggleSelected(!!value)
+        }
       />
     ),
     enableSorting: false,
     enableHiding: false,
   },
 
-  {
-    accessorKey: "name",
-    header: "Hotel Name",
-  },
-  {
-    accessorKey: "country",
-    header: "Country",
-  },
-  {
-    accessorKey: "state",
-    header: "State",
-  },
-  {
-    accessorKey: "city",
-    header: "City",
-  },
-  {
-    accessorKey: "contact",
-    header: "Contact",
-  },
+  { accessorKey: "name", header: "Hotel Name" },
+  { accessorKey: "country", header: "Country" },
+  { accessorKey: "state", header: "State" },
+  { accessorKey: "city", header: "City" },
+  { accessorKey: "contact", header: "Contact" },
+
   {
     accessorKey: "verified",
     header: "Verified",
@@ -130,14 +84,10 @@ export const providerHotelColumns: ColumnDef<ProviderHotel>[] = [
       </span>
     ),
   },
-  {
-    accessorKey: "totalRooms",
-    header: "Rooms",
-  },
-  {
-    accessorKey: "totalBookings",
-    header: "Bookings",
-  },
+
+  { accessorKey: "totalRooms", header: "Rooms" },
+  { accessorKey: "totalBookings", header: "Bookings" },
+
   {
     accessorKey: "status",
     header: "Status",
@@ -157,8 +107,9 @@ export const providerHotelColumns: ColumnDef<ProviderHotel>[] = [
   {
     id: "actions",
     enableHiding: false,
-    cell: () => {
-    //   const hotel = row.original
+    cell: ({ row }) => {
+      const navigate = useNavigate()
+      const hotelId = row.original.id
 
       return (
         <DropdownMenu>
@@ -167,19 +118,32 @@ export const providerHotelColumns: ColumnDef<ProviderHotel>[] = [
               <MoreHorizontal />
             </Button>
           </DropdownMenuTrigger>
+
           <DropdownMenuContent align="end">
             <DropdownMenuLabel>Actions</DropdownMenuLabel>
 
-            <DropdownMenuItem>
+            <DropdownMenuItem
+              onClick={() =>
+                navigate(`/provider/hotels/${hotelId}`)
+              }
+            >
               View Hotel
             </DropdownMenuItem>
 
-            <DropdownMenuItem>
-              Edit Hotel
+            <DropdownMenuItem
+              onClick={() =>
+                navigate(`/provider/hotels/${hotelId}/rooms`)
+              }
+            >
+              Manage Rooms
             </DropdownMenuItem>
 
-            <DropdownMenuItem>
-              Manage Rooms
+            <DropdownMenuItem
+              onClick={() =>
+                navigate(`/provider/hotels/${hotelId}/bookings`)
+              }
+            >
+              View Bookings
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
@@ -188,11 +152,15 @@ export const providerHotelColumns: ColumnDef<ProviderHotel>[] = [
   },
 ]
 
+/* ================= TABLE ================= */
+
 export function ProviderHotelsTable() {
-  const navigate = useNavigate()
+  const { data, isLoading } = useGetProviderHotelsQuery()
+
+  const hotels = data?.data ?? []
 
   const table = useReactTable({
-    data,
+    data: hotels,
     columns: providerHotelColumns,
     getCoreRowModel: getCoreRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
@@ -200,26 +168,24 @@ export function ProviderHotelsTable() {
     getFilteredRowModel: getFilteredRowModel(),
   })
 
+  if (isLoading) {
+    return <div className="p-4 text-sm">Loading hotels...</div>
+  }
+
   return (
     <div className="w-full">
-      {/* ================= TOP BAR ================= */}
+      {/* TOP BAR */}
       <div className="flex items-center gap-2 py-4">
         <Input
           placeholder="Search hotels..."
-          value={(table.getColumn("name")?.getFilterValue() as string) ?? ""}
+          value={
+            (table.getColumn("name")?.getFilterValue() as string) ?? ""
+          }
           onChange={(e) =>
             table.getColumn("name")?.setFilterValue(e.target.value)
           }
           className="max-w-sm"
         />
-
-        <Button
-          className="ml-auto"
-          onClick={() => navigate("/provider/hotels/create")}
-        >
-          <Plus className="mr-2 h-4 w-4" />
-          Add Hotel
-        </Button>
 
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
@@ -246,7 +212,7 @@ export function ProviderHotelsTable() {
         </DropdownMenu>
       </div>
 
-      {/* ================= TABLE ================= */}
+      {/* TABLE */}
       <div className="rounded-md border">
         <Table>
           <TableHeader>
@@ -292,7 +258,7 @@ export function ProviderHotelsTable() {
         </Table>
       </div>
 
-      {/* ================= PAGINATION ================= */}
+      {/* PAGINATION */}
       <div className="flex justify-end space-x-2 py-4">
         <Button
           variant="outline"

@@ -44,7 +44,7 @@ const data = {
       icon: ListIcon,
     },
     {
-      title: "Hotels",
+      title: "My Hotels",
       url: "/provider/hotels",
       icon: BarChartIcon,
     },
