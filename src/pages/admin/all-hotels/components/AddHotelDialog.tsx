@@ -1,82 +1,57 @@
-"use client";
+"use client"
 
-import * as React from "react";
-import { Search } from "lucide-react";
+import * as React from "react"
 
 import {
   Dialog,
   DialogContent,
   DialogHeader,
   DialogTitle,
+  DialogFooter,
   DialogTrigger,
-} from "@/components/ui/dialog";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
+} from "@/components/ui/dialog"
+import { Button } from "@/components/ui/button"
+import { Input } from "@/components/ui/input"
+import { Label } from "@/components/ui/label"
 
-import { toast } from "sonner";
-import {
-  useCreateHotelMutation,
-  useLazySearchUserByEmailQuery,
-} from "@/features/admin/hotels/adminhotelApiSlice";
-
-type User = {
-  id: string;
-  name: string;
-  email: string;
-};
+import { toast } from "sonner"
+import { useCreateHotelMutation } from "@/features/admin/hotels/adminhotelApiSlice"
 
 export function AddHotelDialog() {
-  const [open, setOpen] = React.useState(false);
-  const [email, setEmail] = React.useState("");
-  const [selectedUser, setSelectedUser] = React.useState<User | null>(null);
-  const [hotelName, setHotelName] = React.useState("");
-  const [contact, setContact] = React.useState("");
+  const [open, setOpen] = React.useState(false)
 
-  /* ================= RTK ================= */
+  const [ownerEmail, setOwnerEmail] = React.useState("")
+  const [hotelName, setHotelName] = React.useState("")
+  const [contact, setContact] = React.useState("")
 
-  const [searchUser, { data: searchData, isFetching }] =
-    useLazySearchUserByEmailQuery();
+  const [createHotel, { isLoading }] = useCreateHotelMutation()
 
-  const [createHotel, { isLoading }] = useCreateHotelMutation();
-
-  /* ================= HANDLERS ================= */
-
-  const handleSearch = () => {
-    if (!email) return;
-    searchUser(email);
-  };
+  const reset = () => {
+    setOwnerEmail("")
+    setHotelName("")
+    setContact("")
+  }
 
   const handleCreateHotel = async () => {
-    if (!selectedUser || !hotelName || !contact) {
-      toast.error("Please fill all the fields");
-      return;
+    if (!ownerEmail || !hotelName || !contact) {
+      toast.error("All fields are required")
+      return
     }
 
     try {
       await createHotel({
-        ownerId: selectedUser.id,
+        ownerEmail,
         name: hotelName,
         contact,
-      }).unwrap();
+      }).unwrap()
 
-      toast.success("Hotel created successfully");
-
-      reset();
-      setOpen(false);
-    } catch {
-      toast.error("Failed to create hotel");
+      toast.success("Hotel created successfully")
+      reset()
+      setOpen(false)
+    } catch (err: any) {
+      toast.error(err?.data?.message || "Failed to create hotel")
     }
-  };
-
-  const reset = () => {
-    setEmail("");
-    setSelectedUser(null);
-    setHotelName("");
-    setContact("");
-  };
-
-  /* ================= UI ================= */
+  }
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
@@ -89,72 +64,67 @@ export function AddHotelDialog() {
           <DialogTitle>Add Hotel (Admin)</DialogTitle>
         </DialogHeader>
 
-        {/* ================= SEARCH OWNER ================= */}
-        <div className="space-y-2">
-          <Label>Owner Email</Label>
-          <div className="flex gap-2">
+        {/* FORM */}
+        <div className="grid gap-5 py-4">
+          {/* Owner Email */}
+          <div className="grid gap-2">
+            <Label htmlFor="ownerEmail">
+              Owner Email <span className="text-destructive">*</span>
+            </Label>
             <Input
+              id="ownerEmail"
               placeholder="owner@email.com"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
+              value={ownerEmail}
+              onChange={(e) => setOwnerEmail(e.target.value)}
+              disabled={isLoading}
+              autoFocus
             />
-            <Button
-              variant="secondary"
-              onClick={handleSearch}
-              disabled={isFetching}
-            >
-              <Search className="h-4 w-4" />
-            </Button>
           </div>
 
-          {searchData?.users?.length ? (
-            <div className="border rounded-md">
-              {searchData.users.map((user) => (
-                <button
-                  key={user.id}
-                  onClick={() => setSelectedUser(user)}
-                  className={`w-full px-3 py-2 text-left hover:bg-muted ${
-                    selectedUser?.id === user.id ? "bg-muted font-medium" : ""
-                  }`}
-                >
-                  {user.name} — {user.email}
-                </button>
-              ))}
-            </div>
-          ) : null}
+          {/* Hotel Name */}
+          <div className="grid gap-2">
+            <Label htmlFor="hotelName">
+              Hotel Name <span className="text-destructive">*</span>
+            </Label>
+            <Input
+              id="hotelName"
+              placeholder="Hotel name"
+              value={hotelName}
+              onChange={(e) => setHotelName(e.target.value)}
+              disabled={isLoading}
+            />
+          </div>
+
+          {/* Contact */}
+          <div className="grid gap-2">
+            <Label htmlFor="contact">
+              Contact <span className="text-destructive">*</span>
+            </Label>
+            <Input
+              id="contact"
+              placeholder="+1 555 123 4567"
+              value={contact}
+              onChange={(e) => setContact(e.target.value)}
+              disabled={isLoading}
+            />
+          </div>
         </div>
 
-        {/* ================= HOTEL FORM ================= */}
-        {selectedUser && (
-          <div className="space-y-4 pt-4">
-            <div>
-              <Label>Hotel Name</Label>
-              <Input
-                value={hotelName}
-                onChange={(e) => setHotelName(e.target.value)}
-              />
-            </div>
-
-            <div>
-              <Label>Contact</Label>
-              <Input
-                value={contact}
-                onChange={(e) => setContact(e.target.value)}
-              />
-            </div>
-          </div>
-        )}
-
-        {/* ================= ACTIONS ================= */}
-        <div className="flex justify-end gap-2 pt-4">
-          <Button variant="outline" onClick={() => setOpen(false)}>
+        {/* FOOTER */}
+        <DialogFooter>
+          <Button
+            variant="outline"
+            onClick={() => setOpen(false)}
+            disabled={isLoading}
+          >
             Cancel
           </Button>
+
           <Button onClick={handleCreateHotel} disabled={isLoading}>
-            Create Hotel
+            {isLoading ? "Creating..." : "Create Hotel"}
           </Button>
-        </div>
+        </DialogFooter>
       </DialogContent>
     </Dialog>
-  );
+  )
 }

@@ -1,44 +1,46 @@
 "use client"
 
 import {
-    flexRender,
-    getCoreRowModel,
-    getFilteredRowModel,
-    getPaginationRowModel,
-    getSortedRowModel,
-    useReactTable,
-    type ColumnDef,
-    type ColumnFiltersState,
-    type SortingState,
-    type VisibilityState,
+  flexRender,
+  getCoreRowModel,
+  getFilteredRowModel,
+  getPaginationRowModel,
+  getSortedRowModel,
+  useReactTable,
+  type ColumnDef,
+  type ColumnFiltersState,
+  type SortingState,
+  type VisibilityState,
 } from "@tanstack/react-table"
 import {
-    ArrowUpDown,
-    ChevronDown,
-    MoreHorizontal
+  ArrowUpDown,
+  ChevronDown,
+  MoreHorizontal,
 } from "lucide-react"
 import * as React from "react"
 
 import { Button } from "@/components/ui/button"
 import { Checkbox } from "@/components/ui/checkbox"
 import {
-    DropdownMenu,
-    DropdownMenuCheckboxItem,
-    DropdownMenuContent,
-    DropdownMenuItem,
-    DropdownMenuLabel,
-    DropdownMenuSeparator,
-    DropdownMenuTrigger,
+  DropdownMenu,
+  DropdownMenuCheckboxItem,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import { Input } from "@/components/ui/input"
 import {
-    Table,
-    TableBody,
-    TableCell,
-    TableHead,
-    TableHeader,
-    TableRow,
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
 } from "@/components/ui/table"
+
+import { AddHotelDialog } from "./AddHotelDialog"
 
 /* ================= TYPES ================= */
 
@@ -53,7 +55,7 @@ export type Hotel = {
   status: "active" | "inactive"
 }
 
-/* ================= TEMP DATA (replace with API later) ================= */
+/* ================= TEMP DATA ================= */
 
 const data: Hotel[] = [
   {
@@ -117,15 +119,8 @@ export const columns: ColumnDef<Hotel>[] = [
     ),
   },
 
-  {
-    accessorKey: "ownerEmail",
-    header: "Owner Email",
-  },
-
-  {
-    accessorKey: "contact",
-    header: "Contact",
-  },
+  { accessorKey: "ownerEmail", header: "Owner Email" },
+  { accessorKey: "contact", header: "Contact" },
 
   {
     accessorKey: "verified",
@@ -143,15 +138,8 @@ export const columns: ColumnDef<Hotel>[] = [
     ),
   },
 
-  {
-    accessorKey: "totalRooms",
-    header: "Total Rooms",
-  },
-
-  {
-    accessorKey: "totalBookings",
-    header: "Total Bookings",
-  },
+  { accessorKey: "totalRooms", header: "Total Rooms" },
+  { accessorKey: "totalBookings", header: "Total Bookings" },
 
   {
     accessorKey: "status",
@@ -172,44 +160,30 @@ export const columns: ColumnDef<Hotel>[] = [
   {
     id: "actions",
     enableHiding: false,
-    cell: () => {
-    //   const hotel = row.original
-
-      return (
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button variant="ghost" className="h-8 w-8 p-0">
-              <MoreHorizontal />
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align="end">
-            <DropdownMenuLabel>Actions</DropdownMenuLabel>
-
-            <DropdownMenuItem>
-              View Hotel
-            </DropdownMenuItem>
-
-            <DropdownMenuItem>
-              Edit Hotel
-            </DropdownMenuItem>
-
-            <DropdownMenuSeparator />
-
-            <DropdownMenuItem className="text-red-600">
-              Disable Hotel
-            </DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
-      )
-    },
+    cell: () => (
+      <DropdownMenu>
+        <DropdownMenuTrigger asChild>
+          <Button variant="ghost" className="h-8 w-8 p-0">
+            <MoreHorizontal />
+          </Button>
+        </DropdownMenuTrigger>
+        <DropdownMenuContent align="end">
+          <DropdownMenuLabel>Actions</DropdownMenuLabel>
+          <DropdownMenuItem>View Hotel</DropdownMenuItem>
+          <DropdownMenuItem>Edit Hotel</DropdownMenuItem>
+          <DropdownMenuSeparator />
+          <DropdownMenuItem className="text-red-600">
+            Disable Hotel
+          </DropdownMenuItem>
+        </DropdownMenuContent>
+      </DropdownMenu>
+    ),
   },
 ]
 
 /* ================= TABLE ================= */
 
 export function AdminHotelsTable() {
-//   const navigate = useNavigate()
-
   const [sorting, setSorting] = React.useState<SortingState>([])
   const [columnFilters, setColumnFilters] =
     React.useState<ColumnFiltersState>([])
@@ -249,13 +223,10 @@ export function AdminHotelsTable() {
           className="max-w-sm"
         />
 
-        {/* <Button
-          className="ml-auto"
-          onClick={() => navigate("/admin/hotels/create")}
-        >
-          <Plus className="mr-2 h-4 w-4" />
-          Add Hotel
-        </Button> */}
+        {/* ✅ ADD HOTEL DIALOG */}
+        <div className="ml-auto">
+          <AddHotelDialog />
+        </div>
 
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
