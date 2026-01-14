@@ -1,4 +1,4 @@
-"use client"
+"use client";
 
 import {
   ColumnDef,
@@ -8,12 +8,12 @@ import {
   getPaginationRowModel,
   getSortedRowModel,
   useReactTable,
-} from "@tanstack/react-table"
-import { ChevronDown, MoreHorizontal } from "lucide-react"
-import { useNavigate } from "react-router-dom"
+} from "@tanstack/react-table";
+import { ChevronDown, MoreHorizontal } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
-import { Button } from "@/components/ui/button"
-import { Checkbox } from "@/components/ui/checkbox"
+import { Button } from "@/components/ui/button";
+import { Checkbox } from "@/components/ui/checkbox";
 import {
   DropdownMenu,
   DropdownMenuCheckboxItem,
@@ -21,8 +21,8 @@ import {
   DropdownMenuItem,
   DropdownMenuLabel,
   DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu"
-import { Input } from "@/components/ui/input"
+} from "@/components/ui/dropdown-menu";
+import { Input } from "@/components/ui/input";
 import {
   Table,
   TableBody,
@@ -30,10 +30,11 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "@/components/ui/table"
-import { ProviderHotel, useGetProviderHotelsQuery } from "@/features/provider/hotel/providerHotelApiSlice"
-
-
+} from "@/components/ui/table";
+import {
+  ProviderHotel,
+  useGetProviderHotelsQuery,
+} from "@/features/provider/hotel/providerHotelApiSlice";
 
 /* ================= COLUMNS ================= */
 
@@ -46,17 +47,13 @@ export const providerHotelColumns: ColumnDef<ProviderHotel>[] = [
           table.getIsAllPageRowsSelected() ||
           (table.getIsSomePageRowsSelected() && "indeterminate")
         }
-        onCheckedChange={(value) =>
-          table.toggleAllPageRowsSelected(!!value)
-        }
+        onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
       />
     ),
     cell: ({ row }) => (
       <Checkbox
         checked={row.getIsSelected()}
-        onCheckedChange={(value) =>
-          row.toggleSelected(!!value)
-        }
+        onCheckedChange={(value) => row.toggleSelected(!!value)}
       />
     ),
     enableSorting: false,
@@ -108,8 +105,8 @@ export const providerHotelColumns: ColumnDef<ProviderHotel>[] = [
     id: "actions",
     enableHiding: false,
     cell: ({ row }) => {
-      const navigate = useNavigate()
-      const hotelId = row.original.id
+      const navigate = useNavigate();
+      const hotelId = row.original.id;
 
       return (
         <DropdownMenu>
@@ -123,41 +120,41 @@ export const providerHotelColumns: ColumnDef<ProviderHotel>[] = [
             <DropdownMenuLabel>Actions</DropdownMenuLabel>
 
             <DropdownMenuItem
-              onClick={() =>
-                navigate(`/provider/hotels/${hotelId}`)
-              }
+              onClick={() => navigate(`/provider/hotels/${hotelId}`)}
             >
               View Hotel
             </DropdownMenuItem>
+            {/* EDIT DETAILS */}
+            <DropdownMenuItem
+              onClick={() => navigate(`/provider/hotels/${hotelId}/edit`)}
+            >
+              Edit Details
+            </DropdownMenuItem>
 
             <DropdownMenuItem
-              onClick={() =>
-                navigate(`/provider/hotels/${hotelId}/rooms`)
-              }
+              onClick={() => navigate(`/provider/hotels/${hotelId}/rooms`)}
             >
               Manage Rooms
             </DropdownMenuItem>
 
             <DropdownMenuItem
-              onClick={() =>
-                navigate(`/provider/hotels/${hotelId}/bookings`)
-              }
+              onClick={() => navigate(`/provider/hotels/${hotelId}/bookings`)}
             >
               View Bookings
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
-      )
+      );
     },
   },
-]
+];
 
 /* ================= TABLE ================= */
 
 export function ProviderHotelsTable() {
-  const { data, isLoading } = useGetProviderHotelsQuery()
+  const { data, isLoading } = useGetProviderHotelsQuery();
 
-  const hotels = data?.data ?? []
+  const hotels = data?.data ?? [];
 
   const table = useReactTable({
     data: hotels,
@@ -166,10 +163,10 @@ export function ProviderHotelsTable() {
     getPaginationRowModel: getPaginationRowModel(),
     getSortedRowModel: getSortedRowModel(),
     getFilteredRowModel: getFilteredRowModel(),
-  })
+  });
 
   if (isLoading) {
-    return <div className="p-4 text-sm">Loading hotels...</div>
+    return <div className="p-4 text-sm">Loading hotels...</div>;
   }
 
   return (
@@ -178,9 +175,7 @@ export function ProviderHotelsTable() {
       <div className="flex items-center gap-2 py-4">
         <Input
           placeholder="Search hotels..."
-          value={
-            (table.getColumn("name")?.getFilterValue() as string) ?? ""
-          }
+          value={(table.getColumn("name")?.getFilterValue() as string) ?? ""}
           onChange={(e) =>
             table.getColumn("name")?.setFilterValue(e.target.value)
           }
@@ -201,9 +196,7 @@ export function ProviderHotelsTable() {
                 <DropdownMenuCheckboxItem
                   key={column.id}
                   checked={column.getIsVisible()}
-                  onCheckedChange={(value) =>
-                    column.toggleVisibility(!!value)
-                  }
+                  onCheckedChange={(value) => column.toggleVisibility(!!value)}
                 >
                   {column.id}
                 </DropdownMenuCheckboxItem>
@@ -278,5 +271,5 @@ export function ProviderHotelsTable() {
         </Button>
       </div>
     </div>
-  )
+  );
 }
