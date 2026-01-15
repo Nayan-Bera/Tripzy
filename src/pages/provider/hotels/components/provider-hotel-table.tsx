@@ -124,7 +124,12 @@ export const providerHotelColumns: ColumnDef<ProviderHotel>[] = [
             >
               View Hotel
             </DropdownMenuItem>
-            {/* EDIT DETAILS */}
+            <DropdownMenuItem
+              onClick={() => navigate(`/provider/hotels/${hotelId}/verify`)}
+            >
+              Submit for Verification
+            </DropdownMenuItem>
+
             <DropdownMenuItem
               onClick={() => navigate(`/provider/hotels/${hotelId}/edit`)}
             >

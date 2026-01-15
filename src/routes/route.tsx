@@ -17,6 +17,7 @@ import PublicLayout from "@/layouts/PublicLayout";
 import { AdminContactUs } from "@/pages/admin/contact-us/page";
 import { AllHotels } from "@/pages/admin/all-hotels/page";
 import { MyHotels } from "@/pages/provider/hotels/page";
+import ProviderHotelVerificationPage from "@/pages/provider/hotels/components/ProviderHotelVerificationPage";
 
 // Lazy pages
 const AdminLayout = lazy(() => import("@/pages/admin/layout"));
@@ -88,6 +89,24 @@ export default function AppRoutes() {
               </Suspense>
             }
           >
+            <Route
+              path="/provider/hotels/:hotelId/verify"
+              element={
+                <ProviderLayout>
+                  <ProviderHotelVerificationPage />
+                </ProviderLayout>
+              }
+            />
+
+            <Route
+              path="/provider/hotels/:hotelId/edit"
+              element={
+                <ProviderLayout>
+                  <ProviderHotelVerificationPage />
+                </ProviderLayout>
+              }
+            />
+
             <Route
               path="/provider"
               element={

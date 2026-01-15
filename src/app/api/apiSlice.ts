@@ -25,17 +25,20 @@ const baseQueryWithReauth = async (
 ) => {
   let result = await baseQuery(args, api, extraOptions);
 
-  if (result?.error?.status === 401 && args.url !== "/auth/refresh") {
+  // Access token expired
+  if (result?.error?.status === 401 && args.url !== "/api/auth/refresh") {
     const refreshToken = (api.getState() as RootState).auth.refresh_token;
 
+    // No refresh token → logout
     if (!refreshToken) {
       api.dispatch(logout());
       return result;
     }
 
+    // Try refreshing
     const refreshResult = await baseQuery(
       {
-        url: "/auth/refresh",
+        url: "/api/auth/refresh",
         method: "POST",
         body: { refresh_token: refreshToken },
       },
@@ -43,26 +46,24 @@ const baseQueryWithReauth = async (
       extraOptions
     );
 
+    // ✅ Refresh success
     if (refreshResult?.data) {
       const { access_token, refresh_token } =
         refreshResult.data as RefreshResponse;
 
-      api.dispatch(
-        updateTokens({
-          access_token,
-          refresh_token,
-        })
-      );
+      api.dispatch(updateTokens({ access_token, refresh_token }));
 
-      // retry original request
-      result = await baseQuery(args, api, extraOptions);
-    } else {
-      api.dispatch(logout());
+      // Retry original request with new token
+      return await baseQuery(args, api, extraOptions);
     }
+
+    // Refresh token expired or invalid → LOGOUT
+    api.dispatch(logout());
   }
 
   return result;
 };
+
 
 export const apiSlice = createApi({
   baseQuery: baseQueryWithReauth,

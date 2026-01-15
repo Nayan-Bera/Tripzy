@@ -8,7 +8,7 @@ export type Amenity = {
 export const amenitiesApiSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
     getAmenities: builder.query<Amenity[], void>({
-      query: () => "/admin/amenities",
+      query: () => "admin/aminities/all",
       transformResponse: (res: { data: Amenity[] }) => res.data,
     }),
 
