@@ -11,7 +11,7 @@ import { Label } from "@/components/ui/label";
 
 import { useLoginMutation } from "@/features/auth/loginApiSlice";
 import { setCredentials } from "@/features/auth/authSlice";
-
+import loginImage from "@/assets/images/sign/login.png";
 export function LoginForm({
   className,
   ...props
@@ -136,7 +136,7 @@ const handleSubmit = async (e: FormEvent) => {
           {/* Right Image */}
           <div className="relative hidden bg-muted md:block">
             <img
-              src="/placeholder.svg"
+              src={loginImage}
               alt="Image"
               className="absolute inset-0 h-full w-full object-cover"
             />

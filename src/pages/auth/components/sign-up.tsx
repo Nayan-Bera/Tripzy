@@ -13,7 +13,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 import { useRegisterMutation } from "@/features/auth/registerApiSlice";
-
+import signImage from "@/assets/images/sign/sign.png";
 export function SignupForm({
   className,
   ...props
@@ -164,7 +164,7 @@ export function SignupForm({
 
           <div className="bg-muted relative hidden md:block">
             <img
-              src="/placeholder.svg"
+              src={signImage}
               alt="Signup"
               className="absolute inset-0 h-full w-full object-cover"
             />

@@ -14,7 +14,7 @@ import {
   useResendOtpMutation,
   useVerifyOtpMutation,
 } from "@/features/otp/otpApiSlice";
-
+import signImage from "@/assets/images/sign/sign.png";
 export function OTPForm({ className, ...props }: React.ComponentProps<"div">) {
   const navigate = useNavigate();
   const [params] = useSearchParams();
@@ -134,8 +134,13 @@ export function OTPForm({ className, ...props }: React.ComponentProps<"div">) {
               </FieldDescription>
             </FieldGroup>
           </form>
-
-          <div className="bg-muted hidden md:block" />
+          <div className="relative hidden md:block">
+            <img
+              src={signImage}
+              alt="OTP verification"
+              className="absolute inset-0 h-full w-full object-cover"
+            />
+          </div>
         </CardContent>
       </Card>
     </div>
