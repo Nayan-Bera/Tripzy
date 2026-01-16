@@ -1,4 +1,3 @@
-
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -8,17 +7,12 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
-import {
-  Heart,
-  LogOut,
-  User,
-  LayoutDashboard,
-  Building2,
-} from "lucide-react";
+import { Heart, LogOut, User, LayoutDashboard, Building2 } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 
 import { selectCurrentAuth, logout } from "@/features/auth/authSlice";
+import { RootState } from "@/store";
 
 /* ================= NAV LINKS ================= */
 
@@ -33,13 +27,15 @@ export const Nav: React.FC = () => {
   const auth = useSelector(selectCurrentAuth);
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const wishlistCount = useSelector(
+    (state: RootState) => state.wishlist.items.length
+  );
 
   const isLoggedIn = !!auth.access_token;
   const user = auth.user;
 
   const isAdmin =
-    user?.platformRole === "admin" ||
-    user?.platformRole === "super_admin";
+    user?.platformRole === "admin" || user?.platformRole === "super_admin";
 
   const isProvider = auth.hotelAccess.length > 0;
 
@@ -64,9 +60,7 @@ export const Nav: React.FC = () => {
           <span className="inline-flex h-8 w-8 items-center justify-center rounded-xl bg-linear-to-tr from-sky-500 to-teal-400 text-lg font-bold text-white">
             TY
           </span>
-          <span className="text-lg font-semibold tracking-tight">
-            TRIPZY
-          </span>
+          <span className="text-lg font-semibold tracking-tight">TRIPZY</span>
         </Link>
 
         {/* Center Nav */}
@@ -120,10 +114,21 @@ export const Nav: React.FC = () => {
                   </Link>
 
                   <Link to="/wishlist">
-                    <DropdownMenuItem>
-                      <Heart className="mr-2 h-4 w-4" />
-                      Wishlist
-                    </DropdownMenuItem>
+                    <Button variant="ghost" size="icon" className="relative">
+                      <Heart
+                        className={`h-5 w-5 transition ${
+                          wishlistCount > 0
+                            ? "fill-red-500 text-red-500"
+                            : "text-muted-foreground"
+                        }`}
+                      />
+
+                      {wishlistCount > 0 && (
+                        <span className="absolute -top-1 -right-1 h-4 w-4 rounded-full bg-red-500 text-[10px] text-white flex items-center justify-center">
+                          {wishlistCount}
+                        </span>
+                      )}
+                    </Button>
                   </Link>
 
                   {isProvider && (
