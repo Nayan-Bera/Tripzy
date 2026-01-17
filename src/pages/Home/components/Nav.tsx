@@ -12,7 +12,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 
 import { selectCurrentAuth, logout } from "@/features/auth/authSlice";
-import { RootState } from "@/store";
+import { RootState } from "@/app/store";
 
 /* ================= NAV LINKS ================= */
 
@@ -28,7 +28,7 @@ export const Nav: React.FC = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const wishlistCount = useSelector(
-    (state: RootState) => state.wishlist.items.length
+    (state: RootState) => state?.wishlist.items.length,
   );
 
   const isLoggedIn = !!auth.access_token;
@@ -82,7 +82,7 @@ export const Nav: React.FC = () => {
               >
                 {link.label}
               </a>
-            )
+            ),
           )}
         </nav>
 

@@ -3,7 +3,7 @@ import { configureStore } from "@reduxjs/toolkit";
 import { apiSlice } from "@/app/api/apiSlice";
 
 import authReducer from "@/features/auth/authSlice";
-import wishlistReducer from "@/features/wishlist/wishlistSlice";
+import wishlistReducer from "@/features/wishlist/wishlistApislice";
 export const store = configureStore({
   reducer: {
     [apiSlice.reducerPath]: apiSlice.reducer,
