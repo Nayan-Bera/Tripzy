@@ -156,9 +156,6 @@ const initialWishlist: WishlistItem[] = [
   },
 ];
 
-
-
-
 /* ----------------------------------
    Amenity Icon Map
 -----------------------------------*/
