@@ -19,6 +19,8 @@ import { AllHotels } from "@/pages/admin/all-hotels/page";
 import { MyHotels } from "@/pages/provider/hotels/page";
 import ProviderHotelVerificationPage from "@/pages/provider/hotels/components/ProviderHotelVerificationPage";
 import WishlistPage from "@/pages/Home/user/wishlist/wishlist";
+import AuthLayout from "@/layouts/AuthLayout";
+import ProfilePage from "@/pages/user/profile/profilePage";
 
 // Lazy pages
 const AdminLayout = lazy(() => import("@/pages/admin/layout"));
@@ -40,7 +42,6 @@ export default function AppRoutes() {
         <Route element={<PublicLayout />}>
           <Route path="/" element={<HomePage />} />
           <Route path="/contact-us" element={<ContactUs />} />
-          <Route path ="/wishlist" element={<WishlistPage />} />
         </Route>
 
         <Route path="/login" element={<LoginPage />} />
@@ -49,6 +50,13 @@ export default function AppRoutes() {
 
         {/* 🔒 Protected */}
         <Route element={<PrivateRoute />}>
+          <Route element={<AuthLayout />}>
+            <Route path="/profile" element={<ProfilePage />} />
+            <Route path="/wishlist" element={<WishlistPage />} />
+
+            {/* <Route path="/bookings" element={<BookingsPage />} /> */}
+          </Route>
+
           {/* Admin */}
           <Route
             element={
