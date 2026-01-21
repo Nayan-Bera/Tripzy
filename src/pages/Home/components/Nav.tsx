@@ -91,8 +91,20 @@ export const Nav: React.FC = () => {
           {isLoggedIn ? (
             <>
               <Link to="/wishlist">
-                <Button variant="ghost" size="icon">
-                  <Heart className="h-5 w-5" />
+                <Button variant="ghost" size="icon" className="relative">
+                  <Heart
+                    className={`h-5 w-5 transition ${
+                      wishlistCount > 0
+                        ? "fill-red-500 text-red-500"
+                        : "text-muted-foreground"
+                    }`}
+                  />
+
+                  {wishlistCount > 0 && (
+                    <span className="absolute -top-1 -right-1 h-4 w-4 rounded-full bg-red-500 text-[10px] text-white flex items-center justify-center">
+                      {wishlistCount}
+                    </span>
+                  )}
                 </Button>
               </Link>
 
@@ -113,23 +125,7 @@ export const Nav: React.FC = () => {
                     </DropdownMenuItem>
                   </Link>
 
-                  <Link to="/wishlist">
-                    <Button variant="ghost" size="icon" className="relative">
-                      <Heart
-                        className={`h-5 w-5 transition ${
-                          wishlistCount > 0
-                            ? "fill-red-500 text-red-500"
-                            : "text-muted-foreground"
-                        }`}
-                      />
-
-                      {wishlistCount > 0 && (
-                        <span className="absolute -top-1 -right-1 h-4 w-4 rounded-full bg-red-500 text-[10px] text-white flex items-center justify-center">
-                          {wishlistCount}
-                        </span>
-                      )}
-                    </Button>
-                  </Link>
+                 
 
                   {isProvider && (
                     <Link to="/provider">
