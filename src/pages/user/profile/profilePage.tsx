@@ -22,7 +22,7 @@ export default function ProfilePage() {
 
   /* ================= STATE ================= */
   const [name, setName] = useState(user?.name || "");
-  const [phone, setPhone] = useState(user?.phone_number || "");
+  // const [phone, setPhone] = useState(user?.phone_number || "");
 
   const documents = [
     { id: "1", type: "Passport", number: "XXXX 4321" },
@@ -40,7 +40,7 @@ export default function ProfilePage() {
   return (
     <div className="mx-auto max-w-7xl space-y-10 p-6">
       {/* ================= HERO ================= */}
-      <Card className="relative overflow-hidden border-none bg-gradient-to-br from-sky-500/10 via-indigo-500/10 to-teal-500/10">
+      <Card className="relative overflow-hidden border-none bg-linear-to-br from-sky-500/10 via-indigo-500/10 to-teal-500/10">
         <CardContent className="flex items-center gap-6 p-8">
           <Avatar className="h-20 w-20 ring-4 ring-white/40">
             <AvatarFallback className="text-xl">
@@ -90,10 +90,10 @@ export default function ProfilePage() {
 
               <div>
                 <Label>Phone</Label>
-                <Input
+                {/* <Input
                   value={phone}
                   onChange={(e) => setPhone(e.target.value)}
-                />
+                /> */}
               </div>
             </div>
           </CardContent>
@@ -150,7 +150,7 @@ export default function ProfilePage() {
       </div>
 
       {/* ================= SECURITY ================= */}
-      <Card className="relative overflow-hidden border-destructive/20 bg-gradient-to-br from-destructive/5 via-background to-background">
+      <Card className="relative overflow-hidden border-destructive/20 bg-linear-to-br from-destructive/5 via-background to-background">
         <CardContent className="p-6">
           <div className="mb-6">
             <div className="flex items-center gap-2 text-sm font-semibold text-destructive">
