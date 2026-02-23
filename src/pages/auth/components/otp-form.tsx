@@ -14,7 +14,7 @@ import {
   useResendOtpMutation,
   useVerifyOtpMutation,
 } from "@/features/otp/otpApiSlice";
-import signImage from "@/assets/images/sign/sign.png";
+import signImage from "@/assets/Images/sign/sign.png";
 export function OTPForm({ className, ...props }: React.ComponentProps<"div">) {
   const navigate = useNavigate();
   const [params] = useSearchParams();

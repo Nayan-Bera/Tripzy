@@ -11,7 +11,7 @@ import { Label } from "@/components/ui/label";
 
 import { useLoginMutation } from "@/features/auth/loginApiSlice";
 import { setCredentials } from "@/features/auth/authSlice";
-import loginImage from "@/assets/images/sign/login.png";
+import loginImage from "@/assets/Images/sign/login.png";
 export function LoginForm({
   className,
   ...props
