@@ -13,7 +13,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 import { useRegisterMutation } from "@/features/auth/registerApiSlice";
-import signImage from "@/assets/'Images/sign/sign.png";
+import signImage from "@/assets/Images/sign/sign.png";
 export function SignupForm({
   className,
   ...props
