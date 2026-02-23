@@ -3,6 +3,7 @@ import { Outlet } from "react-router-dom";
 import { Nav } from "@/pages/Home/components/Nav";
 import { Footer } from "@/pages/Home/components/footer";
 
+
 const AuthLayout: React.FC = () => {
   return (
     <div className="min-h-screen bg-background text-foreground">
