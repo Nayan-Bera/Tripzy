@@ -1,7 +1,8 @@
 import React from "react";
 import { Outlet } from "react-router-dom";
 import { Nav } from "@/pages/Home/components/Nav";
-import { Footer } from "@/pages/Home/components/footer";
+import { Footer } from "@/pages/Home/components/Footer";
+
 
 
 const AuthLayout: React.FC = () => {
