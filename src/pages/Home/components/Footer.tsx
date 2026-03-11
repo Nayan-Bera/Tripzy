@@ -3,9 +3,9 @@ export const Footer: React.FC = () => {
     <footer className="border-t bg-muted/40">
       <div className="mx-auto flex max-w-6xl flex-col gap-6 px-4 py-8 text-sm text-muted-foreground md:flex-row md:items-center md:justify-between">
         <div>
-          <p className="font-semibold text-foreground">HotelBooker</p>
+          <p className="font-semibold text-foreground">Tripzy</p>
           <p className="text-xs">
-            © {new Date().getFullYear()} HotelBooker Inc. All rights reserved.
+            © {new Date().getFullYear()} Tripzy Inc. All rights reserved.
           </p>
         </div>
         <div className="flex flex-wrap gap-4">
