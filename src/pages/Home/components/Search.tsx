@@ -1,60 +1,122 @@
-import { Button } from "@/components/ui/button"
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { Input } from "@/components/ui/input"
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { CalendarDays, MapPin, Search, Users } from "lucide-react";
+import { toast } from "sonner";
 
 export const Searchsection: React.FC = () => {
-    return (
-      
-        <Card className="w-full max-w-md border-0 bg-white/90 shadow-xl shadow-sky-100 backdrop-blur">
-          <CardHeader>
-            <CardTitle className="text-base">Search your stay</CardTitle>
-          </CardHeader>
-          <CardContent className="space-y-3">
-            <div className="space-y-1">
-              <label className="text-xs font-medium text-muted-foreground">
-                Where are you going?
-              </label>
-              <Input placeholder="City, landmark or hotel name" />
-            </div>
+  const navigate = useNavigate();
+  const [formData, setFormData] = useState({
+    city: "",
+    checkIn: "",
+    checkOut: "",
+    guests: "2",
+  });
 
-            <div className="grid grid-cols-2 gap-3">
-              <div className="space-y-1">
-                <label className="text-xs font-medium text-muted-foreground">
-                  Check-in
-                </label>
-                <Input type="date" />
-              </div>
-              <div className="space-y-1">
-                <label className="text-xs font-medium text-muted-foreground">
-                  Check-out
-                </label>
-                <Input type="date" />
-              </div>
-            </div>
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    setFormData((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
+  };
 
-            <div className="grid grid-cols-2 gap-3">
-              <div className="space-y-1">
-                <label className="text-xs font-medium text-muted-foreground">
-                  Guests
-                </label>
-                <Input defaultValue="2 adults · 1 room" />
-              </div>
-              <div className="space-y-1">
-                <label className="text-xs font-medium text-muted-foreground">
-                  Trip type
-                </label>
-                <Input defaultValue="Leisure" />
-              </div>
-            </div>
+  const handleSearch = (e: React.FormEvent) => {
+    e.preventDefault();
 
-            <Button className="mt-2 w-full" size="lg">
-              Search Hotels
-            </Button>
+    if (!formData.city.trim()) {
+      toast.error("Enter a destination to start searching.");
+      return;
+    }
 
-            <p className="text-[11px] text-muted-foreground">
-              🔒 No booking fees · Free cancellation on most rooms
-            </p>
-          </CardContent>
-        </Card>
-    )
-}
+    const params = new URLSearchParams();
+    params.set("q", formData.city.trim());
+    params.set("city", formData.city.trim());
+    if (formData.checkIn) params.set("checkIn", formData.checkIn);
+    if (formData.checkOut) params.set("checkOut", formData.checkOut);
+    params.set("guests", formData.guests);
+
+    navigate(`/search?${params.toString()}`);
+  };
+
+  return (
+    <form
+      onSubmit={handleSearch}
+      className="w-full max-w-5xl rounded-lg border bg-white p-2 shadow-xl"
+    >
+      <div className="grid gap-2 md:grid-cols-[1.4fr_1fr_1fr_.8fr_auto]">
+        <label className="flex min-h-16 items-center gap-3 rounded-md border px-3">
+          <MapPin className="h-5 w-5 text-muted-foreground" />
+          <span className="flex-1 space-y-1">
+            <span className="block text-[11px] font-medium uppercase text-muted-foreground">
+              Destination
+            </span>
+            <Input
+              placeholder="Goa, Bengaluru, Udaipur..."
+              name="city"
+              value={formData.city}
+              onChange={handleInputChange}
+              className="h-7 border-0 px-0 shadow-none focus-visible:ring-0"
+            />
+          </span>
+        </label>
+
+        <label className="flex min-h-16 items-center gap-3 rounded-md border px-3">
+          <CalendarDays className="h-5 w-5 text-muted-foreground" />
+          <span className="flex-1 space-y-1">
+            <span className="block text-[11px] font-medium uppercase text-muted-foreground">
+              Check-in
+            </span>
+            <Input
+              type="date"
+              name="checkIn"
+              value={formData.checkIn}
+              onChange={handleInputChange}
+              className="h-7 border-0 px-0 shadow-none focus-visible:ring-0"
+            />
+          </span>
+        </label>
+
+        <label className="flex min-h-16 items-center gap-3 rounded-md border px-3">
+          <CalendarDays className="h-5 w-5 text-muted-foreground" />
+          <span className="flex-1 space-y-1">
+            <span className="block text-[11px] font-medium uppercase text-muted-foreground">
+              Check-out
+            </span>
+            <Input
+              type="date"
+              name="checkOut"
+              value={formData.checkOut}
+              onChange={handleInputChange}
+              className="h-7 border-0 px-0 shadow-none focus-visible:ring-0"
+            />
+          </span>
+        </label>
+
+        <label className="flex min-h-16 items-center gap-3 rounded-md border px-3">
+          <Users className="h-5 w-5 text-muted-foreground" />
+          <span className="flex-1 space-y-1">
+            <span className="block text-[11px] font-medium uppercase text-muted-foreground">
+              Guests
+            </span>
+            <Input
+              type="number"
+              name="guests"
+              value={formData.guests}
+              onChange={handleInputChange}
+              min="1"
+              max="10"
+              className="h-7 border-0 px-0 shadow-none focus-visible:ring-0"
+            />
+          </span>
+        </label>
+
+        <Button type="submit" className="min-h-16 rounded-md px-6" size="lg">
+          <Search className="mr-2 h-4 w-4" />
+          Search
+        </Button>
+      </div>
+    </form>
+  );
+};

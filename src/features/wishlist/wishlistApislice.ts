@@ -3,9 +3,17 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 export type WishlistItem = {
   id: string;
   name: string;
-  location: string;
-  image: string;
-  pricePerNight: number;
+  location:
+    | string
+    | {
+        city?: string;
+        state?: string;
+        address?: string;
+      };
+  image?: string;
+  cover?: string;
+  pricePerNight?: number;
+  rating?: number;
 };
 
 type WishlistState = {
@@ -38,6 +46,13 @@ const wishlistSlice = createSlice({
       }
     },
 
+    addToWishlist(state, action: PayloadAction<WishlistItem>) {
+      const exists = state.items.some((item) => item.id === action.payload.id);
+      if (!exists) {
+        state.items.push(action.payload);
+      }
+    },
+
     removeFromWishlist(state, action: PayloadAction<string>) {
       state.items = state.items.filter(
         (item) => item.id !== action.payload
@@ -51,6 +66,7 @@ const wishlistSlice = createSlice({
 });
 
 export const {
+  addToWishlist,
   setWishlist,
   toggleWishlist,
   removeFromWishlist,

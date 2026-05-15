@@ -22,6 +22,12 @@ import WishlistPage from "@/pages/Home/user/wishlist/wishlist";
 import AuthLayout from "@/layouts/AuthLayout";
 import ProfilePage from "@/pages/user/profile/profilePage";
 
+// Property pages
+import SearchResultsPage from "@/pages/property/search/page";
+import PropertyDetailPage from "@/pages/property/detail/page";
+import CheckoutPage from "@/pages/booking/CheckoutPage";
+import BookingConfirmationPage from "@/pages/booking/BookingConfirmationPage";
+
 // Lazy pages
 const AdminLayout = lazy(() => import("@/pages/admin/layout"));
 const AdminDashboard = lazy(() => import("@/pages/admin/page"));
@@ -42,6 +48,8 @@ export default function AppRoutes() {
         <Route element={<PublicLayout />}>
           <Route path="/" element={<HomePage />} />
           <Route path="/contact-us" element={<ContactUs />} />
+          <Route path="/search" element={<SearchResultsPage />} />
+          <Route path="/property/:id" element={<PropertyDetailPage />} />
         </Route>
 
         <Route path="/login" element={<LoginPage />} />
@@ -53,6 +61,10 @@ export default function AppRoutes() {
           <Route element={<AuthLayout />}>
             <Route path="/profile" element={<ProfilePage />} />
             <Route path="/wishlist" element={<WishlistPage />} />
+
+            {/* Booking */}
+            <Route path="/checkout/:propertyId" element={<CheckoutPage />} />
+            <Route path="/booking-confirmation/:bookingId" element={<BookingConfirmationPage />} />
 
             {/* <Route path="/bookings" element={<BookingsPage />} /> */}
           </Route>
